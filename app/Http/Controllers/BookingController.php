@@ -1,0 +1,72 @@
+<?php
+
+namespace App\Http\Controllers;
+
+use App\Models\Booking;
+use App\Models\Availability;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
+
+class BookingController extends Controller
+{
+    public function store(Request $request)
+    {
+        $request->validate([
+            'availability_id' => 'required|exists:availabilities,id',
+            'tutor_id' => 'required',
+            'subject_id' => 'required',
+            'hours' => 'required',
+            'session_mode' => 'required',
+        ]);
+
+        $availability = Availability::findOrFail($request->availability_id);
+
+        if ($availability->status === 'booked') {
+            return back()->with('error', 'This slot is already booked');
+        }
+
+        Booking::create([
+            'student_id' => Auth::id(),
+            'tutor_id' => $request->tutor_id,
+            'subject_id' => $request->subject_id,
+
+            // NOW VALID because migration adds it
+            'availability_id' => $availability->id,
+
+            // from availability table
+            'session_date' => $availability->available_date,
+
+            'hours' => $request->hours,
+            'session_mode' => $request->session_mode,
+            'status' => 'pending',
+        ]);
+
+        $availability->update([
+            'status' => 'booked'
+        ]);
+
+        return back()->with('success', 'Booking created successfully');
+    }
+
+    public function approve($id)
+    {
+        $booking = Booking::findOrFail($id);
+
+        $booking->update([
+            'status' => 'approved'
+        ]);
+
+        return back()->with('success', 'Booking approved successfully');
+    }
+
+    public function reject($id)
+    {
+        $booking = Booking::findOrFail($id);
+
+        $booking->update([
+            'status' => 'rejected'
+        ]);
+
+        return back()->with('success', 'Booking rejected successfully');
+    }
+}

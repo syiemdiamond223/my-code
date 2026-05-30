@@ -10,12 +10,7 @@ use Barryvdh\DomPDF\Facade\Pdf;
 class TutorReportController extends Controller
 {
 
-    /*
-    |--------------------------------------------------------------------------
-    | REPORT LIST
-    |--------------------------------------------------------------------------
-    */
-
+    //Report List
     public function index()
     {
         $bookings = Booking::where(
@@ -31,13 +26,8 @@ class TutorReportController extends Controller
 
 
 
-    /*
-    |--------------------------------------------------------------------------
-    | PREVIEW PDF
-    |--------------------------------------------------------------------------
-    */
-
-    public function preview($id)
+    //Preview PDF
+    public function preview(int $id)
     {
         $booking = Booking::where(
             'id',
@@ -59,13 +49,8 @@ class TutorReportController extends Controller
 
 
 
-    /*
-    |--------------------------------------------------------------------------
-    | DOWNLOAD PDF
-    |--------------------------------------------------------------------------
-    */
-
-    public function download($id)
+    //Download PDF
+    public function download(int $id)
     {
         $booking = Booking::where(
             'id',

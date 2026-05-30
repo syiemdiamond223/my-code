@@ -9,50 +9,73 @@
 
     <!-- AOS Animation -->
     <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
+
+    <style>
+        /* Floating background blobs */
+        .blob {
+            position: absolute;
+            width: 400px;
+            height: 400px;
+            border-radius: 50%;
+            filter: blur(90px);
+            opacity: 0.35;
+            z-index: 0;
+            animation: float 10s infinite ease-in-out;
+        }
+
+        .blob1 {
+            background: #60a5fa;
+            top: -120px;
+            left: -120px;
+        }
+
+        .blob2 {
+            background: #a78bfa;
+            top: 200px;
+            right: -150px;
+            animation-delay: 2s;
+        }
+
+        .blob3 {
+            background: #34d399;
+            bottom: -150px;
+            left: 30%;
+            animation-delay: 4s;
+        }
+
+        @keyframes float {
+            0%, 100% { transform: translateY(0px); }
+            50% { transform: translateY(30px); }
+        }
+    </style>
 </head>
 
-<body class="bg-white text-gray-900">
+<body class="bg-white text-gray-900 overflow-x-hidden">
 
 <!-- NAVBAR -->
-<nav class="fixed top-0 left-0 w-full z-50 bg-white/95 backdrop-blur-md border-b border-gray-200">
+<nav class="fixed top-0 left-0 w-full z-50 bg-white/90 backdrop-blur-md border-b border-gray-200 shadow-sm">
 
     <div class="max-w-7xl mx-auto px-8 py-4 flex justify-between items-center">
 
-        <!-- Logo -->
         <a href="/" class="text-2xl font-bold text-blue-700">
             Tutor Finder
         </a>
 
-        <!-- Menu -->
         <div class="flex gap-8 items-center">
 
-            <a href="#features" class="text-gray-700 hover:text-blue-600 transition">
-                Features
-            </a>
-
-            <a href="#about" class="text-gray-700 hover:text-blue-600 transition">
-                About
-            </a>
+            <a href="#features" class="text-gray-700 hover:text-blue-600 transition">Features</a>
+            <a href="#about" class="text-gray-700 hover:text-blue-600 transition">About</a>
 
             @auth
                 @if(auth()->user()->role === 'student')
-                    <a href="{{ route('student.dashboard') }}"
-                       class="text-gray-700 hover:text-blue-600 transition">
-                        Dashboard
-                    </a>
+                    <a href="{{ route('student.dashboard') }}" class="hover:text-blue-600">Dashboard</a>
                 @elseif(auth()->user()->role === 'tutor')
-                    <a href="{{ route('tutor.dashboard') }}"
-                       class="text-gray-700 hover:text-blue-600 transition">
-                        Dashboard
-                    </a>
+                    <a href="{{ route('tutor.dashboard') }}" class="hover:text-blue-600">Dashboard</a>
                 @endif
 
                 <form method="POST" action="{{ route('logout') }}">
                     @csrf
-                    <button type="submit"
-                            class="text-gray-700 hover:text-red-500 transition">
-                        Logout
-                    </button>
+                    <button class="hover:text-red-500">Logout</button>
                 </form>
             @endauth
 
@@ -64,16 +87,26 @@
 
 
 <!-- HERO SECTION -->
-<section class="pt-28 min-h-screen bg-gradient-to-br from-blue-50 via-white to-gray-100">
+<section class="relative pt-20 min-h-screen bg-gradient-to-br from-blue-50 via-white to-gray-100 overflow-hidden">
 
-    <div class="max-w-7xl mx-auto px-8">
+    <!--  Floating background blobs -->
+    <div class="blob blob1"></div>
+    <div class="blob blob2"></div>
+    <div class="blob blob3"></div>
 
-        <div class="grid md:grid-cols-2 gap-14 items-center min-h-[85vh]">
+    <div class="max-w-7xl mx-auto px-8 relative z-10">
 
-            <!-- LEFT CONTENT -->
-            <div data-aos="fade-right">
+        <div class="grid md:grid-cols-2 gap-14 items-center min-h-[70vh]">
 
-                <p class="text-blue-600 font-semibold mb-4">
+            <!-- LEFT -->
+            <div data-aos="fade-right" data-aos-duration="1400">
+
+                <!--  NEW HERO BADGE -->
+                <div class="inline-flex items-center bg-blue-100 text-blue-700 px-4 py-2 rounded-full text-sm font-semibold mb-4 shadow-sm">
+                     Student-Tutor Platform
+                </div>
+
+                <p class="text-blue-600 font-medium mb-5">
                     Learn Better. Achieve More.
                 </p>
 
@@ -87,11 +120,9 @@
                     book sessions easily, and improve your skills anytime.
                 </p>
 
-                <!-- Buttons -->
                 <div class="mt-8 flex gap-4">
 
                     @guest
-
                         <a href="{{ route('register') }}"
                            class="bg-blue-600 text-white px-7 py-3 rounded-xl font-semibold hover:bg-blue-700 transition">
                             Get Started
@@ -101,11 +132,9 @@
                            class="border border-gray-300 px-7 py-3 rounded-xl font-semibold hover:bg-gray-100 transition">
                             Login
                         </a>
-
                     @endguest
 
                     @auth
-
                         @if(auth()->user()->role === 'student')
                             <a href="{{ route('student.dashboard') }}"
                                class="bg-blue-600 text-white px-7 py-3 rounded-xl font-semibold hover:bg-blue-700 transition">
@@ -117,18 +146,22 @@
                                 Dashboard
                             </a>
                         @endif
-
                     @endauth
 
                 </div>
 
             </div>
 
-            <!-- RIGHT IMAGE -->
-            <div data-aos="fade-left" data-aos-delay="200">
-                <img src="{{ asset('images/main.jpeg') }}"
-                     alt="Tutor Finder"
-                     class="w-full rounded-3xl shadow-2xl object-cover">
+            <!-- RIGHT -->
+            <div data-aos="fade-left" data-aos-duration="1600">
+
+                <div class="relative">
+                    <div class="absolute -inset-4 bg-blue-200/40 blur-3xl rounded-3xl"></div>
+
+                    <img src="{{ asset('images/main.jpeg') }}"
+                         class="relative w-full rounded-3xl shadow-2xl object-cover">
+                </div>
+
             </div>
 
         </div>
@@ -143,64 +176,32 @@
 
     <div class="max-w-6xl mx-auto px-8">
 
-        <div class="text-center mb-14" data-aos="fade-up">
-            <h2 class="text-4xl font-bold text-gray-900">
-                Key Features with Tutor Finder
-            </h2>
-
-            <p class="text-gray-600 mt-4">
-                Easy tutor search and booking
-            </p>
+        <div class="text-center mb-10" data-aos="fade-up">
+            <h2 class="text-4xl font-bold">Key Features</h2>
+            <p class="text-gray-600 mt-4">Everything you need for learning</p>
         </div>
 
         <div class="grid md:grid-cols-3 gap-8">
 
-            <!-- Card 1 -->
-            <div class="p-8 rounded-2xl border border-gray-200 shadow-sm hover:shadow-lg transition"
+            <div class="p-8 rounded-2xl border shadow-sm hover:shadow-xl transition"
+                 data-aos="zoom-in" data-aos-delay="80">
+                🎓
+                <h3 class="text-xl font-semibold mt-3">Qualified Tutors</h3>
+                <p class="text-gray-600 mt-2">Expert verified tutors</p>
+            </div>
+
+            <div class="p-8 rounded-2xl border shadow-sm hover:shadow-xl transition"
                  data-aos="zoom-in" data-aos-delay="100">
-
-                <div class="text-4xl mb-4">🎓</div>
-
-                <h3 class="text-xl font-semibold mb-3">
-                    Qualified Tutors
-                </h3>
-
-                <p class="text-gray-600">
-                    Find experienced and trusted tutors for every subject.
-                </p>
-
+                📅
+                <h3 class="text-xl font-semibold mt-3">Easy Booking</h3>
+                <p class="text-gray-600 mt-2">Simple scheduling system</p>
             </div>
 
-            <!-- Card 2 -->
-            <div class="p-8 rounded-2xl border border-gray-200 shadow-sm hover:shadow-lg transition"
-                 data-aos="zoom-in" data-aos-delay="200">
-
-                <div class="text-4xl mb-4">📅</div>
-
-                <h3 class="text-xl font-semibold mb-3">
-                    Easy Booking
-                </h3>
-
-                <p class="text-gray-600">
-                    Book classes quickly and manage schedules easily.
-                </p>
-
-            </div>
-
-            <!-- Card 3 -->
-            <div class="p-8 rounded-2xl border border-gray-200 shadow-sm hover:shadow-lg transition"
-                 data-aos="zoom-in" data-aos-delay="300">
-
-                <div class="text-4xl mb-4">💻</div>
-
-                <h3 class="text-xl font-semibold mb-3">
-                    Flexible Learning
-                </h3>
-
-                <p class="text-gray-600">
-                    Choose online or offline sessions based on your needs.
-                </p>
-
+            <div class="p-8 rounded-2xl border shadow-sm hover:shadow-xl transition"
+                 data-aos="zoom-in" data-aos-delay="120">
+                💻
+                <h3 class="text-xl font-semibold mt-3">Flexible Learning</h3>
+                <p class="text-gray-600 mt-2">Online & offline classes</p>
             </div>
 
         </div>
@@ -213,49 +214,25 @@
 <!-- ABOUT -->
 <section id="about" class="py-20 bg-gray-50">
 
-    <div class="max-w-6xl mx-auto px-8">
+    <div class="max-w-6xl mx-auto px-8 grid md:grid-cols-2 gap-14 items-center">
 
-        <div class="grid md:grid-cols-2 gap-14 items-center">
+        <div data-aos="fade-right">
+            <img src="{{ asset('images/back.jpg') }}"
+                 class="rounded-3xl shadow-xl">
+        </div>
 
-            <!-- Image -->
-            <div data-aos="fade-right">
-                <img src="{{ asset('images/back.jpeg') }}"
-                     alt="About Tutor Finder"
-                     class="rounded-3xl shadow-xl">
-            </div>
+        <div data-aos="fade-left">
 
-            <!-- Content -->
-            <div data-aos="fade-left" data-aos-delay="200">
+            <h2 class="text-4xl font-bold mb-6">About Tutor Finder</h2>
 
-                <h2 class="text-4xl font-bold text-gray-900 mb-6">
-                    About Tutor Finder
-                </h2>
+            <p class="text-gray-600 mb-6">
+                Tutor Finder helps students connect with tutors quickly and easily.
+            </p>
 
-                <p class="text-gray-600 leading-relaxed mb-6">
-                    Tutor Finder helps students connect with tutors in a simple,
-                    fast, and reliable way. Search tutors, compare profiles,
-                    and start learning with confidence.
-                </p>
-
-                <div class="space-y-4">
-
-                    <div class="flex items-center gap-3">
-                        <span class="text-blue-600">✔</span>
-                        <p>Verified Tutors</p>
-                    </div>
-
-                    <div class="flex items-center gap-3">
-                        <span class="text-blue-600">✔</span>
-                        <p>Secure Booking System</p>
-                    </div>
-
-                    <div class="flex items-center gap-3">
-                        <span class="text-blue-600">✔</span>
-                        <p>Online & Offline Classes</p>
-                    </div>
-
-                </div>
-
+            <div class="space-y-3">
+                <p>✔ Verified Tutors</p>
+                <p>✔ Secure Booking</p>
+                <p>✔ Online & Offline Classes</p>
             </div>
 
         </div>
@@ -268,26 +245,22 @@
 <!-- FOOTER -->
 <footer class="bg-gray-900 py-8">
 
-    <div class="max-w-6xl mx-auto px-8 text-center text-gray-400">
-
-        <p>
-            © 2026 Tutor Finder. All rights reserved.
-        </p>
-
+    <div class="text-center text-gray-400">
+        © 2026 Tutor Finder. All rights reserved.
     </div>
 
 </footer>
 
 
-<!-- AOS Script -->
+<!-- AOS -->
 <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
-
 <script>
-    AOS.init({
-        duration: 1000,
-        once: true,
-        offset: 100
-    });
+AOS.init({
+    duration: 1300,
+    easing: 'ease-in-out',
+    once: true,
+    offset: 120
+});
 </script>
 
 </body>

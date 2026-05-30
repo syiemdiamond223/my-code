@@ -212,22 +212,21 @@
     </h3>
 
     <!-- Phone input restricted to exactly 10 digits -->
-    <input type="tel"
-           name="student_phone"
-           pattern="[0-9]{10}"
-           maxlength="10"
-           title="Phone number must be exactly 10 digits"
-           class="w-full border p-3 rounded-xl mb-3"
-           placeholder="Phone"
-           required>
+    <input type="text"
+       name="student_phone"
+       maxlength="10"
+       pattern="[0-9]{10}"
+       title="Phone number must be exactly 10 digits"
+       oninput="this.value=this.value.replace(/[^0-9]/g,'')"
+       class="w-full border p-3 rounded-xl mb-3"
+       placeholder="Phone">
 
     <!-- Address input restricted to a maximum of 150 characters -->
     <textarea name="student_address"
               rows="4"
               maxlength="150"
               class="w-full border p-3 rounded-xl"
-              placeholder="Address"
-              required></textarea>
+              placeholder="Address"></textarea>
 
 </div>
 

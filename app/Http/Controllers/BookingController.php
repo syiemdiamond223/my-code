@@ -17,6 +17,9 @@ class BookingController extends Controller
             'subject_id' => 'required',
             'hours' => 'required',
             'session_mode' => 'required',
+
+            'student_phone' => 'required_if:session_mode,offline|digits:10',
+            'student_address' => 'required_if:session_mode,offline|max:150',
         ]);
 
         $availability = Availability::findOrFail($request->availability_id);
@@ -38,6 +41,8 @@ class BookingController extends Controller
 
             'hours' => $request->hours,
             'session_mode' => $request->session_mode,
+            'student_phone' => $request->student_phone,
+            'student_address' => $request->student_address,
             'status' => 'pending',
         ]);
 

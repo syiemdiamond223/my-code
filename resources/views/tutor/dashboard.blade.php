@@ -12,8 +12,8 @@
     <div class="relative overflow-hidden rounded-3xl shadow-sm border border-blue-100 min-h-[340px] mb-10">
 
         {{-- Background Image --}}
-        <img src="{{ asset('images/tutor_dashboard.png') }}"
-             class="absolute inset-0 w-full h-full object-cover opacity-90">
+        <img src="{{ asset('images/tutors_dashboard.jpeg') }}"
+             class="absolute inset-0 w-full h-full object-cover object-center opacity-90">
 
         {{-- Overlay --}}
         <div class="absolute inset-0 bg-white/20 backdrop-blur-[1px]"></div>

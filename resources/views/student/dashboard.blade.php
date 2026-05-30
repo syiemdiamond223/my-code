@@ -44,23 +44,23 @@
     {{-- QUICK STATS --}}
     <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mt-6">
 
-        <div class="bg-white rounded-2xl shadow-sm border border-gray-200 p-6">
-            <p class="text-gray-500 text-sm font-medium">Booked Sessions</p>
-            <h2 class="text-4xl font-bold text-blue-600 mt-3">
+       <div class="bg-gradient-to-r from-violet-400 to-blue-700 text-white rounded-2xl shadow-sm p-6">
+            <p class="text-white-500 text-center text-lg font-medium">Booked Sessions</p>
+            <h2 class="text-4xl font-bold text-center text-white-600 mt-3">
                 {{ $bookedSessions ?? 0 }}
             </h2>
         </div>
 
-        <div class="bg-white rounded-2xl shadow-sm border border-gray-200 p-6">
-            <p class="text-gray-500 text-sm font-medium">Available Tutors</p>
-            <h2 class="text-4xl font-bold text-indigo-600 mt-3">
+       <div class="bg-gradient-to-r from-rose-300 to-violet-700 text-white rounded-2xl shadow-sm p-6">
+            <p class="text-white-500 text-center text-lg font-medium">Available Tutors</p>
+            <h2 class="text-4xl font-bold text-center text-white-600 mt-3">
                 {{ isset($tutors) ? $tutors->count() : 0 }}
             </h2>
         </div>
 
-        <div class="bg-white rounded-2xl shadow-sm border border-gray-200 p-6">
-            <p class="text-gray-500 text-sm font-medium">Learning Hours</p>
-            <h2 class="text-4xl font-bold text-purple-600 mt-3">
+        <div class="bg-gradient-to-r from-emerald-300 to-blue-500 text-white rounded-2xl shadow-sm p-6">
+            <p class="text-white-500 text-center text-lg font-medium">Learning Hours</p>
+            <h2 class="text-4xl font-bold text-center text-white-600 mt-3">
                 {{ $learningHours ?? 0 }}h
             </h2>
         </div>

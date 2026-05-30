@@ -113,7 +113,7 @@ class TutorProfileController extends Controller
     }
 
     // VALIDATION (REUSED)
-    private function validateRequest($request)
+    private function validateRequest(Request $request)
     {
         $request->validate([
             'name' => 'required|string|max:255|regex:/^[A-Za-z\s]+$/',

@@ -49,6 +49,17 @@
 
     <hr class="my-6">
 
+    {{-- VALIDATION ERRORS --}}
+@if ($errors->any())
+    <div class="mb-4 bg-red-100 border border-red-300 text-red-700 px-4 py-3 rounded-lg">
+        <ul class="list-disc pl-5">
+            @foreach ($errors->all() as $error)
+                <li>{{ $error }}</li>
+            @endforeach
+        </ul>
+    </div>
+@endif
+
     {{-- ACTIONS --}}
     @if($tutor->status == 'pending')
 
@@ -72,6 +83,7 @@
                 <input type="text"
                        name="rejection_message"
                        placeholder="Rejection reason"
+                       required
                        class="border px-3 py-2 rounded">
 
                 <button class="bg-red-600 text-white px-6 py-2 rounded-lg">

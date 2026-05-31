@@ -279,15 +279,11 @@
                 Pending Actions
             </h2>
 
-            @php
-                $pendingList = $recentTutors->where('status', 'pending');
-            @endphp
-
-            @if($pendingList->count() > 0)
+            @if($recentTutors->count() > 0)
 
                 <div class="space-y-4">
 
-                    @foreach($pendingList as $tutor)
+                    @foreach($recentTutors as $tutor)
 
                         <div class="border border-slate-200 rounded-2xl p-4 hover:bg-slate-50 transition">
 

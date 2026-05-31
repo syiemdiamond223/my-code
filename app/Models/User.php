@@ -11,19 +11,14 @@ class User extends Authenticatable implements MustVerifyEmail
     use Notifiable;
 
     protected $fillable = [
-        'name',
-        'email',
+        'name',//name of the user
+        'email',//  email of the user, must be unique
         'password',
         'role',
         'status',
     ];
 
-    /*
-    |--------------------------------------------------------------------------
-    | RELATIONSHIPS
-    |--------------------------------------------------------------------------
-    */
-
+    //Relationships
     // user can have one tutor profile
     public function tutor()
     {

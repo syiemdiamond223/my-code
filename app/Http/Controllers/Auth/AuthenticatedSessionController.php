@@ -22,7 +22,7 @@ class AuthenticatedSessionController extends Controller
     {
         $request->authenticate();
 
-        //checks credentials
+        //Authenticate user using email & password
         $request->session()->regenerate();
 
         //role based redirect

@@ -11,6 +11,7 @@ class BookingController extends Controller
 {
     public function store(Request $request)
     {
+        //ensure the availability slot is still open and valid
         $request->validate([
             'availability_id' => 'required|exists:availabilities,id',
             'tutor_id' => 'required',
@@ -24,21 +25,19 @@ class BookingController extends Controller
 
         $availability = Availability::findOrFail($request->availability_id);
 
-        if ($availability->status === 'booked') {
+        //already booked
+        if ($availability->status === 'booked') 
+        {
             return back()->with('error', 'This slot is already booked');
         }
 
+        //create booking
         Booking::create([
             'student_id' => Auth::id(),
             'tutor_id' => $request->tutor_id,
             'subject_id' => $request->subject_id,
-
-            // NOW VALID because migration adds it
             'availability_id' => $availability->id,
-
-            // from availability table
             'session_date' => $availability->available_date,
-
             'hours' => $request->hours,
             'session_mode' => $request->session_mode,
             'student_phone' => $request->student_phone,
@@ -53,7 +52,8 @@ class BookingController extends Controller
         return back()->with('success', 'Booking created successfully');
     }
 
-    public function approve($id)
+    //Approves booking
+    public function approve( int $id)
     {
         $booking = Booking::findOrFail($id);
 
@@ -64,7 +64,8 @@ class BookingController extends Controller
         return back()->with('success', 'Booking approved successfully');
     }
 
-    public function reject($id)
+    //Rejects booking
+    public function reject( int $id)
     {
         $booking = Booking::findOrFail($id);
 

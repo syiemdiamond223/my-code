@@ -14,14 +14,13 @@ use Illuminate\View\View;
 
 class RegisteredUserController extends Controller
 {
-    /*Display the registration view*/
+    //Display the registration page
     public function create(): View
     {
         return view('auth.register');
     }
 
-    /* Handle an incoming registration request.
-     @throws \Illuminate\Validation\ValidationException*/
+    //Handle an incoming registration request
     public function store(Request $request): RedirectResponse
     {
         $request->validate([
@@ -45,7 +44,7 @@ class RegisteredUserController extends Controller
                 'unique:' . User::class,
             ],
 
-            // PASSWORD
+            // PASSWORD strength validation
             'password' => [
                 'required',
                 'confirmed',
@@ -83,6 +82,7 @@ class RegisteredUserController extends Controller
             'password.regex' => 'Password must contain uppercase, lowercase, number, and special character.',
         ]);
 
+        // Create the user in the database
         $user = User::create([
             'name' => $request->name,
             'email' => $request->email,
@@ -92,6 +92,7 @@ class RegisteredUserController extends Controller
 
         event(new Registered($user));
 
+       // Log the user in
         Auth::login($user);
 
         // ROLE-BASED REDIRECT

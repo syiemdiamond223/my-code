@@ -6,20 +6,19 @@ use Illuminate\Support\Facades\Schema;
 
 return new class extends Migration
 {
-    // Run the migrations
+    // Stores all system users
     public function up(): void
     {
         Schema::create('users', function (Blueprint $table) {
 
             $table->unsignedInteger('id')->autoIncrement()->primary();
 
-            $table->string('name');
+            $table->string('name');//name of the user
 
             $table->string('email')->unique();
 
             $table->string('role');
 
-            // ADD THIS
             $table->string('status')->default('active');
 
             $table->string('password');

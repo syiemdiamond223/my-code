@@ -6,9 +6,7 @@ use Illuminate\Support\Facades\Schema;
 
 return new class extends Migration
 {
-    /**
-     * Run the migrations.
-     */
+    // Creates pivot table to link tutors and subjects
     public function up(): void
     {
         Schema::create('subject_tutor', function (Blueprint $table) {

@@ -9,11 +9,10 @@ use App\Models\Booking;
 
 class AdminController extends Controller
 {
-    // =========================
-    // DASHBOARD
-    // =========================
+    //Admin Dashboard
     public function dashboard()
     {
+        //System Statistics
         $totalUsers = User::whereIn('role', ['student', 'tutor'])->count();
         $totalTutors = Tutor::where('status', 'approved')->count();
         $pendingTutors = Tutor::where('status', 'pending')->count();
@@ -26,6 +25,7 @@ class AdminController extends Controller
 
         $recentBookings = Booking::latest()->take(5)->get();
 
+        //Latest Activity
         $todayUsers = User::whereIn('role', ['student', 'tutor'])
             ->whereDate('created_at', '>=', now()->subDays(7))
             ->latest()
@@ -49,9 +49,7 @@ class AdminController extends Controller
         ));
     }
 
-    // =========================
-    // USERS
-    // =========================
+    //User Management
     public function users()
     {
         $users = User::where('role', '!=', 'admin')
@@ -93,10 +91,7 @@ class AdminController extends Controller
         return back()->with('success', 'User status updated.');
     }
 
-    // =========================
-    // TUTORS (ADMIN APPROVAL FLOW)
-    // =========================
-
+    //Tutor Admin Approval
     // LIST PAGE
     public function tutors()
     {
@@ -108,7 +103,7 @@ class AdminController extends Controller
     }
 
     // PROFILE VIEW PAGE
-    public function showTutor($id)
+    public function showTutor(int $id)
     {
         $tutor = Tutor::with(['user', 'subjects'])
             ->findOrFail($id);
@@ -120,7 +115,7 @@ class AdminController extends Controller
     public function approveTutor(int $id)
     {
         $tutor = Tutor::findOrFail($id);
-
+       // Update tutor status to approved and clear any rejection message
         $tutor->update([
             'status' => 'approved',
             'rejection_message' => null
@@ -137,7 +132,7 @@ class AdminController extends Controller
         ]);
 
         $tutor = Tutor::findOrFail($id);
-
+        // Update tutor status to rejected and save the rejection message
         $tutor->update([
             'status' => 'rejected',
             'rejection_message' => $request->rejection_message,
@@ -146,9 +141,7 @@ class AdminController extends Controller
         return back()->with('success', 'Tutor rejected successfully.');
     }
 
-    // =========================
-    // BOOKINGS
-    // =========================
+    //Bookings Management
     public function bookings()
     {
         $bookings = Booking::with('student', 'tutor.user', 'subject')
@@ -158,9 +151,7 @@ class AdminController extends Controller
         return view('admin.bookings', compact('bookings'));
     }
 
-    // =========================
-    // PAYMENTS
-    // =========================
+    //Payments Management
     public function payments()
     {
         $payments = Booking::with('student', 'tutor.user', 'subject')

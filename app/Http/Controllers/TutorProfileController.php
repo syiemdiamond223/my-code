@@ -53,6 +53,7 @@ class TutorProfileController extends Controller
             'email' => $request->email,
         ]);
 
+        //create or update tutor profile
         $tutor = Tutor::updateOrCreate(
             ['user_id' => Auth::id()],
             [
@@ -68,6 +69,7 @@ class TutorProfileController extends Controller
             ]
         );
 
+        // Sync subjects
         $tutor->subjects()->sync($request->subjects ?? []);
 
         return redirect()->route('tutor.dashboard')
@@ -112,7 +114,7 @@ class TutorProfileController extends Controller
             ->with('success', 'Profile updated successfully and sent for admin review.');
     }
 
-    // VALIDATION (REUSED)
+    // VALIDATION (Reused for both store and update)
     private function validateRequest(Request $request)
     {
         $request->validate([

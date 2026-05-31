@@ -11,6 +11,23 @@
         Tutor Profile Review
     </h2>
 
+    {{-- STATUS MESSAGE (TOP ALERT) --}}
+    @if($tutor->status == 'approved')
+        <div class="mb-6 bg-green-100 border border-green-300 text-green-700 px-4 py-3 rounded-lg">
+            This tutor is already approved.
+        </div>
+    @elseif($tutor->status == 'rejected')
+        <div class="mb-6 bg-red-100 border border-red-300 text-red-700 px-4 py-3 rounded-lg">
+            This tutor has been rejected.
+        </div>
+
+        @if($tutor->rejection_message)
+            <div class="mb-6 bg-red-50 border border-red-200 text-red-600 px-4 py-2 rounded-lg">
+                Reason: {{ $tutor->rejection_message }}
+            </div>
+        @endif
+    @endif
+
     {{-- BASIC INFO --}}
     <div class="space-y-2 text-gray-800">
 
@@ -50,15 +67,15 @@
     <hr class="my-6">
 
     {{-- VALIDATION ERRORS --}}
-@if ($errors->any())
-    <div class="mb-4 bg-red-100 border border-red-300 text-red-700 px-4 py-3 rounded-lg">
-        <ul class="list-disc pl-5">
-            @foreach ($errors->all() as $error)
-                <li>{{ $error }}</li>
-            @endforeach
-        </ul>
-    </div>
-@endif
+    @if ($errors->any())
+        <div class="mb-4 bg-red-100 border border-red-300 text-red-700 px-4 py-3 rounded-lg">
+            <ul class="list-disc pl-5">
+                @foreach ($errors->all() as $error)
+                    <li>{{ $error }}</li>
+                @endforeach
+            </ul>
+        </div>
+    @endif
 
     {{-- ACTIONS --}}
     @if($tutor->status == 'pending')
@@ -93,17 +110,6 @@
 
         </div>
 
-    @else
-
-        <p class="text-gray-600">
-            This tutor is already {{ $tutor->status }}.
-        </p>
-
-        @if($tutor->rejection_message)
-            <p class="text-red-600 mt-2">
-                Reason: {{ $tutor->rejection_message }}
-            </p>
-        @endif
 
     @endif
 

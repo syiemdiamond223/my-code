@@ -89,60 +89,60 @@
 
     {{-- PROFILE STATUS --}}
     @php
-    $tutorProfile = auth()->user()->tutor;
-@endphp
+        $tutorProfile = auth()->user()->tutor;
+    @endphp
 
-{{-- PROFILE STATUS --}}
-<div class="rounded-3xl p-6 shadow-lg text-white
-
-    @if(!$tutorProfile)
-        bg-gradient-to-br from-slate-500 to-slate-700
-
-    @elseif($tutorProfile->status == 'approved')
-        bg-gradient-to-br from-green-400 to-green-700
-
-    @elseif($tutorProfile->status == 'pending')
-        bg-gradient-to-br from-yellow-400 to-yellow-700
-
-    @else
-        bg-gradient-to-br from-red-400 to-red-700
-    @endif
-">
-
-    <p class="text-sm opacity-90">
-        Profile Status
-    </p>
-
-    <h2 class="text-3xl font-bold mt-3">
+    {{-- PROFILE STATUS --}}
+    <div class="rounded-3xl p-6 shadow-lg text-white
 
         @if(!$tutorProfile)
-            Incomplete
+            bg-gradient-to-br from-slate-500 to-slate-700
+
+        @elseif($tutorProfile->status == 'approved')
+            bg-gradient-to-br from-green-400 to-green-700
+
+        @elseif($tutorProfile->status == 'pending')
+            bg-gradient-to-br from-yellow-400 to-yellow-700
+
         @else
-            {{ ucfirst($tutorProfile->status) }}
+            bg-gradient-to-br from-red-400 to-red-700
+        @endif
+        ">
+
+        <p class="text-sm opacity-90">
+            Profile Status
+        </p>
+
+        <h2 class="text-3xl font-bold mt-3">
+
+            @if(!$tutorProfile)
+                Incomplete
+            @else
+                {{ ucfirst($tutorProfile->status) }}
+            @endif
+
+        </h2>
+
+        @if(!$tutorProfile)
+
+            <p class="mt-3 text-sm opacity-90">
+                Please complete your tutor profile.
+            </p>
+
+        @elseif($tutorProfile->status == 'rejected')
+
+            <p class="mt-3 text-sm opacity-90">
+                {{ $tutorProfile->rejection_message }}
+            </p>
+
         @endif
 
-    </h2>
+    </div>
 
-    @if(!$tutorProfile)
-
-        <p class="mt-3 text-sm opacity-90">
-            Please complete your tutor profile.
-        </p>
-
-    @elseif($tutorProfile->status == 'rejected')
-
-        <p class="mt-3 text-sm opacity-90">
-            {{ $tutorProfile->rejection_message }}
-        </p>
-
-    @endif
-
-</div>
-
-</div>
+    </div>
 
 
-    {{-- QUICK ACTION (NEW - PLACED AFTER STATS) --}}
+    {{-- QUICK ACTION --}}
     <div class="bg-white rounded-2xl border border-blue-100 p-6 shadow-sm flex items-center justify-between">
 
         <div>

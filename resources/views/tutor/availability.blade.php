@@ -106,6 +106,7 @@
 
             <div class="space-y-4">
 
+                <!--show each availability slot with toggle and delete options -->
                 @foreach($availabilities as $availability)
 
                     <div class="border border-gray-200 rounded-xl p-4 flex justify-between items-center">
@@ -143,7 +144,7 @@
 
                             @endif
 
-                            <!-- TOGGLE BUTTON -->
+                            <!-- TOGGLE BUTTON  mark slot as available or unavailable -->
                             <form method="POST"
                                   action="{{ route('tutor.availability.toggle', $availability->id) }}">
 
@@ -173,21 +174,21 @@
                             </form>
 
                             <!-- DELETE BUTTON -->
-<form method="POST"
-      action="{{ route('tutor.availability.delete', $availability->id) }}">
+                            <form method="POST"
+                                action="{{ route('tutor.availability.delete', $availability->id) }}">
 
-    @csrf
-    @method('DELETE')
+                                @csrf
+                                @method('DELETE')
 
-    <button type="submit"
-            onclick="return confirm('Delete this availability slot?')"
-            class="bg-gray-700 hover:bg-black text-white px-4 py-2 rounded-lg text-sm font-medium transition">
+                                <button type="submit"
+                                        onclick="return confirm('Delete this availability slot?')"
+                                        class="bg-gray-700 hover:bg-black text-white px-4 py-2 rounded-lg text-sm font-medium transition">
 
-        Delete
+                                    Delete
 
-    </button>
+                                </button>
 
-</form>
+                            </form>
 
                         </div>
 

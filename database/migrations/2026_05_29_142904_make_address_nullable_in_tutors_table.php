@@ -6,6 +6,7 @@ use Illuminate\Support\Facades\Schema;
 
 return new class extends Migration
 {
+    // Makes the address field in the tutors table nullable to allow tutors without an address
     public function up(): void
     {
         Schema::table('tutors', function (Blueprint $table) {

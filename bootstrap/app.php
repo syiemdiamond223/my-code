@@ -7,6 +7,7 @@ use Illuminate\Foundation\Configuration\Middleware;
 use App\Http\Middleware\AdminMiddleware;
 use App\Http\Middleware\CheckBlockedUser;
 
+//Starts the Laravel application and sets project root path
 return Application::configure(basePath: dirname(__DIR__))
     ->withRouting(
         web: __DIR__.'/../routes/web.php',
@@ -14,6 +15,7 @@ return Application::configure(basePath: dirname(__DIR__))
         health: '/up',
     )
 
+    //Routing setup
     ->withMiddleware(function (Middleware $middleware): void
     {
         $middleware->alias([

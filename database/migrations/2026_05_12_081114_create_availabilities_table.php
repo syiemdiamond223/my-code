@@ -6,6 +6,7 @@ use Illuminate\Support\Facades\Schema;
 
 return new class extends Migration
 {
+    // Stores tutor availability for scheduling sessions
     public function up(): void
     {
         Schema::create('availabilities', function (Blueprint $table) {

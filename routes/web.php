@@ -25,6 +25,7 @@ Route::get('/test-route', function () {
     return 'working';
 });
 
+//Sends user based on role to respective dashboard
 Route::get('/', function () {
 
     if (Auth::check()) {
@@ -41,12 +42,11 @@ Route::get('/', function () {
 });
 
 
-// AUTH MIDDLEWARE GROUP
-
+// AUTH MIDDLEWARE GROUP - ONLY ACCESSIBLE TO LOGGED IN USERS
 Route::middleware(['auth', 'blocked'])->group(function () {
 
-    // ADMIN ROUTES
 
+    // ADMIN ROUTES - ONLY ACCESSIBLE TO ADMINS
     Route::prefix('admin')->middleware('admin')->group(function () {
 
         Route::get('/dashboard', [AdminController::class, 'dashboard'])
@@ -90,33 +90,28 @@ Route::middleware(['auth', 'blocked'])->group(function () {
 
 
     // STUDENT DASHBOARD
-
     Route::get('/student/dashboard', [StudentDashboardController::class, 'index'])
         ->name('student.dashboard');
 
 
     // SEARCH TUTORS
-
     Route::get('/student/search', function (Request $request) {
 
         $query = $request->input('search');
 
       $tutors = Tutor::with([
-    'user',
-    'subjects',
-    'availabilities' => function ($q) {
-
+        'user',
+        'subjects',
+        'availabilities' => function ($q) {
         $q->where('status', 'available')
           ->whereNotIn('id', function ($sub) {
-
                 $sub->select('availability_id')
                     ->from('bookings');
-
           });
 
-    }
-])
-            ->where('status', 'approved')
+        }   
+    ])
+          ->where('status', 'approved')
             ->whereHas('user', function ($q) {
                 $q->where('status', 'active');
             })
@@ -157,24 +152,24 @@ Route::middleware(['auth', 'blocked'])->group(function () {
 
     // BOOK SESSION FORM
 
- Route::get('/student/book/{id}', function ($id) {
+    Route::get('/student/book/{id}', function ($id) {
 
-    $tutor = Tutor::with([
-        'user',
-        'subjects',
-        'availabilities' => function ($q) {
+        $tutor = Tutor::with([
+            'user',
+            'subjects',
+            'availabilities' => function ($q) {
 
-            $q->where('status', 'available');
+                $q->where('status', 'available');
 
-        }
-    ])->findOrFail($id);
+            }
+        ])->findOrFail($id);
 
-    return view('student.book-session', compact('tutor'));
+        return view('student.book-session', compact('tutor'));
 
-})->name('student.booking.create');
+    })->name('student.booking.create');
 
 
-    // STORE BOOKING (FIXED)
+    // STORE BOOKING
 
     Route::post('/student/book/{id}', function (Request $request, $id) {
 
@@ -202,16 +197,16 @@ Route::middleware(['auth', 'blocked'])->group(function () {
             ]);
         }
 
- // PREVENT DOUBLE BOOKING
-$alreadyBooked = Booking::where('availability_id', $request->availability_id)
-    ->exists();
+        // PREVENT DOUBLE BOOKING
+        $alreadyBooked = Booking::where('availability_id', $request->availability_id)
+            ->exists();
 
-if ($alreadyBooked) {
+        if ($alreadyBooked) {
 
-    return redirect()
-        ->route('student.booking.create', $tutor->id)
-        ->with('error', 'This slot is already booked.');
-}
+            return redirect()
+                ->route('student.booking.create', $tutor->id)
+                ->with('error', 'This slot is already booked.');
+        }
 
         // TOTAL PRICE
         $totalPrice = $tutor->price_per_hour * $request->hours;
@@ -236,6 +231,10 @@ if ($alreadyBooked) {
             'student_address' => $request->student_address,
         ]);
 
+        $availability->update([
+        'status' => 'unavailable'
+    ]);
+
         return redirect()->route('student.bookings')
             ->with('success', 'Booking created successfully.');
 
@@ -246,14 +245,20 @@ if ($alreadyBooked) {
 
     Route::get('/student/bookings', function () {
 
+      Booking::where('status', 'approved')
+        ->whereDate('session_date', '<', today())
+        ->update([
+            'status' => 'completed'
+        ]);    
+    
         $bookings = Booking::with('tutor.user', 'subject')
-            ->where('student_id', Auth::id())
-            ->latest()
-            ->get();
+                ->where('student_id', Auth::id())
+                ->latest()
+                ->get();
 
-        return view('student.bookings', compact('bookings'));
+            return view('student.bookings', compact('bookings'));
 
-    })->name('student.bookings');
+        })->name('student.bookings');
 
 
     // CANCEL BOOKING
@@ -300,7 +305,7 @@ if ($alreadyBooked) {
         ->name('tutor.dashboard');
 
 
-    // TUTOR AVAILABILITY
+    // TUTOR AVAILABILITY 
 
     Route::get('/tutor/availability', [AvailabilityController::class, 'index'])
         ->name('tutor.availability');
@@ -336,11 +341,17 @@ if ($alreadyBooked) {
         ->name('tutor.booking.reject');
 
 
-    // TUTOR SESSIONS
+    // TUTOR SESSIONS - SHOW ALL SESSIONS FOR TUTOR
 
     Route::get('/tutor/sessions', function () {
 
         $tutor = Tutor::where('user_id', Auth::id())->first();
+
+         Booking::where('status', 'approved')
+        ->whereDate('session_date', '<', today())
+        ->update([
+            'status' => 'completed'
+        ]);
 
         $sessions = Booking::with('student', 'subject')
             ->where('tutor_id', $tutor->id)
@@ -364,7 +375,7 @@ if ($alreadyBooked) {
         ->name('tutor.reports.download');
 
 
-    // UPDATE MEETING LINK
+    // ADD MEETING LINK
 
     Route::patch('/tutor/booking/{id}/meeting', function (Request $request, $id) {
 
@@ -372,33 +383,34 @@ if ($alreadyBooked) {
             'meeting_link' => 'required|url'
         ]);
 
-        $booking = Booking::findOrFail($id);
+            $booking = Booking::findOrFail($id);
 
-        $booking->update([
-            'meeting_link' => $request->meeting_link
-        ]);
+            $booking->update([
+                'meeting_link' => $request->meeting_link
+            ]);
 
-        return back()->with(
-            'success',
-            'Meeting link added successfully.'
-        );
+            return back()->with(
+                'success',
+                'Meeting link added successfully.'
+            );
 
-    })->name('tutor.booking.meeting');
-});
+        })->name('tutor.booking.meeting');
+    });
 
 
-// PROFILE ROUTES
+    // PROFILE ROUTES
 
-Route::middleware('auth')->group(function () {
+    Route::middleware('auth')->group(function () {
 
-    Route::get('/profile', [ProfileController::class, 'edit'])
-        ->name('profile.edit');
+        Route::get('/profile', [ProfileController::class, 'edit'])
+            ->name('profile.edit');
 
-    Route::patch('/profile', [ProfileController::class, 'update'])
-        ->name('profile.update');
+        Route::patch('/profile', [ProfileController::class, 'update'])
+            ->name('profile.update');
 
-    Route::delete('/profile', [ProfileController::class, 'destroy'])
-        ->name('profile.destroy');
-});
+        Route::delete('/profile', [ProfileController::class, 'destroy'])
+            ->name('profile.destroy');
+    });
 
-require __DIR__.'/auth.php';
+    // AUTH ROUTES LOADED FROM auth.php
+    require __DIR__.'/auth.php';

@@ -6,9 +6,7 @@ use Illuminate\Support\Facades\Schema;
 
 return new class extends Migration
 {
-    /**
-     * Run the migrations.
-     */
+    // Creates a table to store password reset tokens for users
     public function up(): void
     {
         Schema::create('password_reset_tokens', function (Blueprint $table) {

@@ -166,6 +166,8 @@
 
                             <p class="text-green-700 font-semibold">
                                 Time:
+                                <!-- Format time to 24-hour format (e.g., 14:00 - 15:00) -->
+                                 {{ \Carbon\Carbon::parse($slot->start_time)->format('H:i') }}
                                 {{ \Carbon\Carbon::parse($slot->start_time)->format('H:i') }}
                                 -
                                 {{ \Carbon\Carbon::parse($slot->end_time)->format('H:i') }}

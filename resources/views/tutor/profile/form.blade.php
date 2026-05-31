@@ -153,6 +153,7 @@
 
                         <option value="">Select Experience</option>
 
+                        {{-- Loop from 1 to 5 years for experience options --}}
                         @for($i = 1; $i <= 5; $i++)
 
                             <option value="{{ $i }}"
@@ -224,89 +225,90 @@
 
                 </div>
 
-                    {{-- TEACHING MODE --}}
-<div>
+                {{-- TEACHING MODE --}}
+                <div>
 
-    <label class="block text-sm font-semibold text-gray-700 mb-2">
-        Teaching Mode
-    </label>
+                    <label class="block text-sm font-semibold text-gray-700 mb-2">
+                        Teaching Mode
+                    </label>
 
-    <select name="mode"
-            class="w-full border border-gray-300 rounded-xl px-4 py-3 text-black focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none"
-            required>
+                    <select name="mode"
+                            class="w-full border border-gray-300 rounded-xl px-4 py-3 text-black focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none"
+                            required>
 
-        <option value="">Select Mode</option>
+                        <option value="">Select Mode</option>
 
-        <option value="online"
-            {{ old('mode', $tutor->mode ?? '') == 'online' ? 'selected' : '' }}>
-            Online
-        </option>
+                        <option value="online"
+                            {{ old('mode', $tutor->mode ?? '') == 'online' ? 'selected' : '' }}>
+                            Online
+                        </option>
 
-        <option value="offline"
-            {{ old('mode', $tutor->mode ?? '') == 'offline' ? 'selected' : '' }}>
-            Offline
-        </option>
+                        <option value="offline"
+                            {{ old('mode', $tutor->mode ?? '') == 'offline' ? 'selected' : '' }}>
+                            Offline
+                        </option>
 
-        <option value="both"
-            {{ old('mode', $tutor->mode ?? '') == 'both' ? 'selected' : '' }}>
-            Both
-        </option>
+                        <option value="both"
+                            {{ old('mode', $tutor->mode ?? '') == 'both' ? 'selected' : '' }}>
+                            Both
+                        </option>
 
-    </select>
+                    </select>
 
-    @error('mode')
-        <p class="text-red-500 text-sm mt-1">
-            {{ $message }}
-        </p>
-    @enderror
+                    @error('mode')
+                        <p class="text-red-500 text-sm mt-1">
+                            {{ $message }}
+                        </p>
+                    @enderror
 
-</div>
+                </div>
 
-{{-- SUBJECTS --}}
-<div>
+                {{-- SUBJECTS --}}
+                <div>
 
-    <label class="block text-sm font-semibold text-gray-700 mb-3">
-        Subjects You Teach
-    </label>
+                    <label class="block text-sm font-semibold text-gray-700 mb-3">
+                        Subjects You Teach
+                    </label>
 
-    <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
 
-        @foreach($subjects as $subject)
+                        @foreach($subjects as $subject)
 
-            <label class="flex items-center gap-3 border border-gray-300 rounded-xl px-4 py-3 hover:bg-blue-50 transition cursor-pointer">
+                            <label class="flex items-center gap-3 border border-gray-300 rounded-xl px-4 py-3 hover:bg-blue-50 transition cursor-pointer">
 
-                <input type="checkbox"
-                       name="subjects[]"
-                       value="{{ $subject->id }}"
-                       class="w-5 h-5 text-blue-600 rounded"
+                                <!-- Check if the subject is in the old input (in case of validation error) or in the tutor's existing subjects (when editing) -->
+                                <input type="checkbox"
+                                    name="subjects[]"
+                                    value="{{ $subject->id }}"
+                                    class="w-5 h-5 text-blue-600 rounded"
 
-                       {{ in_array(
-                            $subject->id,
-                            old(
-                                'subjects',
-                                isset($tutor)
-                                    ? $tutor->subjects->pluck('id')->toArray()
-                                    : []
-                            )
-                       ) ? 'checked' : '' }}>
+                                    {{ in_array(
+                                            $subject->id,
+                                            old(
+                                                'subjects',
+                                                isset($tutor)
+                                                    ? $tutor->subjects->pluck('id')->toArray()
+                                                    : []
+                                            )
+                                    ) ? 'checked' : '' }}>
 
-                <span class="text-gray-800 font-medium">
-                    {{ $subject->name }}
-                </span>
+                                <span class="text-gray-800 font-medium">
+                                    {{ $subject->name }}
+                                </span>
 
-            </label>
+                            </label>
 
-        @endforeach
+                        @endforeach
 
-    </div>
+                    </div>
 
-    @error('subjects')
-        <p class="text-red-500 text-sm mt-2">
-            {{ $message }}
-        </p>
-    @enderror
+                    @error('subjects')
+                        <p class="text-red-500 text-sm mt-2">
+                            {{ $message }}
+                        </p>
+                    @enderror
 
-</div>
+                </div>
 
                 {{-- BIO --}}
                 <div>

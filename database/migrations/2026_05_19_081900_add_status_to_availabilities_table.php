@@ -6,9 +6,7 @@ use Illuminate\Support\Facades\Schema;
 
 return new class extends Migration
 {
-    /**
-     * Run the migrations.
-     */
+    // Adds a status column to the availabilities table to track availability status
     public function up(): void
     {
         Schema::table('availabilities', function (Blueprint $table) {

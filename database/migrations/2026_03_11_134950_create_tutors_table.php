@@ -6,7 +6,7 @@ use Illuminate\Support\Facades\Schema;
 
 return new class extends Migration
 {
-    // Run the migrations
+    //Stpores tutor profiles
     public function up(): void
     {
         Schema::create('tutors', function (Blueprint $table) {

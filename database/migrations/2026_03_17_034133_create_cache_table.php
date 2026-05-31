@@ -6,7 +6,7 @@ use Illuminate\Support\Facades\Schema;
 
 return new class extends Migration
 {
-    //Run the migrations
+    // Creates cache tables for storing cached data and locks
     public function up(): void
     {
         Schema::create('cache', function (Blueprint $table) {

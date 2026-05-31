@@ -94,7 +94,11 @@
 
             @csrf
 
-            {{-- ✅ FIXED: AVAILABILITY MOVED INSIDE FORM --}}
+            <input type="hidden"
+                name="tutor_id"
+                value="{{ $tutor->id }}">
+
+            {{-- AVAILABILITY INSIDE FORM --}}
             <div class="bg-green-50 border border-green-200 rounded-2xl p-6 mb-8">
 
                 <h3 class="text-lg font-bold text-green-800 mb-4">
@@ -105,14 +109,20 @@
 
                     <div class="space-y-3">
 
-                        @foreach($tutor->availabilities->where('status', 'available') as $slot)
+                       @foreach($tutor->availabilities as $slot)
+                        <label class="block p-3 rounded mb-2 cursor-pointer border
 
-                            <label class="block border p-3 rounded mb-2 cursor-pointer">
+                        @if($slot->status == 'unavailable')
+                            bg-red-50 border-red-300
+                        @else
+                            bg-green-50 border-green-300
+                        @endif
+                        ">
 
                                 <input type="radio"
                                        name="availability_id"
                                        value="{{ $slot->id }}"
-                                       required>
+                                        @if($slot->status == 'unavailable') disabled @else required @endif>
 
                                 <div>
                                     <p>{{ $slot->available_date }}</p>
@@ -121,6 +131,15 @@
                                         -
                                         {{ \Carbon\Carbon::parse($slot->end_time)->format('H:i') }}
                                     </p>
+                                       @if($slot->status == 'unavailable')
+                                            <p class="text-red-600 font-semibold mt-2">
+                                                ● Booked
+                                            </p>
+                                        @else
+                                            <p class="text-green-600 font-semibold mt-2">
+                                                ● Available
+                                            </p>
+                                        @endif
                                 </div>
 
                             </label>
@@ -167,12 +186,12 @@
                 </label>
 
                 <input type="number"
+                       id="hours"
                        name="hours"
                        value="{{ old('hours', 1) }}"
                        min="1"
                        required
                        class="w-full border border-gray-300 rounded-xl px-4 py-3 text-black bg-white">
-
             </div>
 
             {{-- SESSION MODE --}}
@@ -233,16 +252,29 @@
 
             </div>
 
-            {{-- PRICE --}}
-            <div class="mb-8 bg-gray-50 border border-gray-200 rounded-xl p-4">
+         {{-- PRICE --}}
+        <div class="mb-8 bg-gray-50 border border-gray-200 rounded-xl p-4">
 
-                <p class="text-sm text-gray-600 mb-1">Price Per Hour</p>
+            <p class="text-sm text-gray-600 mb-1">
+                Price Per Hour
+            </p>
 
-                <p class="text-xl font-bold text-blue-600">
-                    ₹{{ $tutor->price_per_hour }}
-                </p>
+            <p class="text-lg font-semibold text-gray-700">
+                ₹{{ $tutor->price_per_hour }}
+            </p>
 
-            </div>
+            <hr class="my-3">
+
+            <p class="text-sm text-gray-600 mb-1">
+                Total Price
+            </p>
+
+            <p id="totalPrice"
+            class="text-2xl font-bold text-blue-600">
+                ₹{{ $tutor->price_per_hour }}
+            </p>
+
+        </div>
 
             {{-- BUTTON --}}
             <button type="submit"
@@ -259,9 +291,11 @@
 
 <script>
 
+//show/hide offline fields based on session mode selection
 const sessionMode = document.getElementById('session_mode');
 const offlineFields = document.getElementById('offlineFields');
 
+// Show/hide offline fields based on session mode selection
 function toggleOffline() {
     if (sessionMode.value === 'offline') {
         offlineFields.classList.remove('hidden');
@@ -272,6 +306,22 @@ function toggleOffline() {
 
 sessionMode.addEventListener('change', toggleOffline);
 toggleOffline();
+
+
+// PRICE CALCULATION
+const hoursInput = document.getElementById('hours');
+const totalPrice = document.getElementById('totalPrice');
+
+const pricePerHour = {{ $tutor->price_per_hour }};
+
+function updatePrice() {
+    let hours = parseInt(hoursInput.value) || 1;
+    totalPrice.innerText = '₹' + (pricePerHour * hours);
+}
+
+hoursInput.addEventListener('input', updatePrice);
+
+updatePrice();
 
 </script>
 

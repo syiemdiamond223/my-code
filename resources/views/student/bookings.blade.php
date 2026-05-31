@@ -70,6 +70,10 @@
                         @elseif($booking->status == 'approved')
                             bg-green-100 text-green-700
 
+
+                        @elseif($booking->status == 'completed')
+                            bg-green-100 text-green-700
+
                         @elseif($booking->status == 'cancelled')
                             bg-gray-200 text-gray-700
 
@@ -112,7 +116,7 @@
 
                 </div>
 
-                <!-- BLOCKED TUTOR MESSAGE -->
+                <!-- BLOCKED  TUTOR MESSAGE -->
                 @if($booking->tutor->user->status == 'blocked')
 
                     <div class="mb-4 bg-red-50 border border-red-200 text-red-700 px-4 py-3 rounded-xl text-sm">
@@ -203,6 +207,15 @@
 
                 @endif
 
+                @if($booking->status == 'completed')
+
+                    <div class="bg-green-50 text-green-700 border border-green-200 px-4 py-3 rounded-xl text-sm">
+
+                        This tutoring session has been completed.
+
+                    </div>
+
+                @endif
 
                 <!-- REJECTED MESSAGE -->
                 @if($booking->status == 'rejected')

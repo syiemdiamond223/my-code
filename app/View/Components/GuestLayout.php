@@ -7,7 +7,7 @@ use Illuminate\View\View;
 
 class GuestLayout extends Component
 {
-    // Get the view / contents that represents the component
+    // Guest pages that are accessible without login, such as login and registration pages
     public function render(): View
     {
         return view('layouts.guest');

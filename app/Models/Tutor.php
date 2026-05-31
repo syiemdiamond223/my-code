@@ -8,12 +8,12 @@ use Illuminate\Database\Eloquent\Model;
 class Tutor extends Model
 {
     protected $fillable = [
-        'user_id',
-        'bio',
-        'phone',
-        'qualification',
-        'experience',
-        'institution',
+        'user_id',//which user this tutor profile belongs to
+        'bio',//brief description of the tutor
+        'phone',//tutor's phone number
+        'qualification',//educational qualifications
+        'experience',//teaching experience
+        'institution',//institution where the tutor is affiliated
         'price_per_hour',
         'mode',
         'is_approved',
@@ -39,6 +39,7 @@ class Tutor extends Model
         return $this->hasMany(Booking::class);
     }
 
+    // Tutor has many availabilities
     public function availabilities()
     {
         return $this->hasMany(Availability::class);

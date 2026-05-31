@@ -6,6 +6,7 @@ use Illuminate\Support\Facades\Schema;
 
 return new class extends Migration
 {
+    //Add session tme to bookings table to store the time of tutoring sessions
     public function up(): void
     {
         Schema::table('bookings', function (Blueprint $table) {

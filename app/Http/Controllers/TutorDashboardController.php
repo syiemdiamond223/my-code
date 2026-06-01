@@ -12,39 +12,29 @@ class TutorDashboardController extends Controller
     {
         $tutor = Auth::user()->tutor;
 
-        if (!$tutor) {
 
+        $profileIncomplete = !$tutor;
+
+        if (!$tutor) {
+           
             return view('tutor.dashboard', [
                 'totalStudents' => 0,
                 'upcomingSessionList' => collect(),
                 'pendingBookings' => collect(),
                 'recentSessions' => collect(),
                 'todaySessions' => collect(),
+                'profileIncomplete' => true,
             ]);
         }
 
         $tutorId = $tutor->id;
 
-        /*
-        |--------------------------------------------------------------------------
-        | TOTAL STUDENTS
-        |--------------------------------------------------------------------------
-        */
-
+        //Total Students
         $totalStudents = Booking::where('tutor_id', $tutorId)
             ->distinct('student_id')
             ->count('student_id');
 
-        /*
-        |--------------------------------------------------------------------------
-        | UPCOMING SESSIONS
-        |--------------------------------------------------------------------------
-        |
-        | Show approved bookings
-        | where date is today or future
-        |
-        */
-
+       //Upcoming Sessions
         $upcomingSessionList = Booking::with(['student', 'subject'])
             ->where('tutor_id', $tutorId)
             ->where('status', 'approved')
@@ -52,12 +42,7 @@ class TutorDashboardController extends Controller
             ->orderBy('session_date', 'asc')
             ->get();
 
-        /*
-        |--------------------------------------------------------------------------
-        | PENDING BOOKINGS
-        |--------------------------------------------------------------------------
-        */
-
+        //Pending Bookings
         $pendingBookings = Booking::with(['student', 'subject'])
             ->where('tutor_id', $tutorId)
             ->where('status', 'pending')
@@ -65,24 +50,14 @@ class TutorDashboardController extends Controller
             ->take(5)
             ->get();
 
-        /*
-        |--------------------------------------------------------------------------
-        | RECENT SESSIONS
-        |--------------------------------------------------------------------------
-        */
-
+        //Recent Sessions
         $recentSessions = Booking::with(['student', 'subject'])
             ->where('tutor_id', $tutorId)
             ->latest()
             ->take(5)
             ->get();
 
-        /*
-        |--------------------------------------------------------------------------
-        | TODAY SESSIONS
-        |--------------------------------------------------------------------------
-        */
-
+        //Today's Sessions
         $todaySessions = Booking::with(['student', 'subject'])
             ->where('tutor_id', $tutorId)
             ->whereDate('session_date', Carbon::today())
@@ -94,7 +69,8 @@ class TutorDashboardController extends Controller
             'upcomingSessionList',
             'pendingBookings',
             'recentSessions',
-            'todaySessions'
+            'todaySessions',
+            'profileIncomplete'
         ));
     }
 }

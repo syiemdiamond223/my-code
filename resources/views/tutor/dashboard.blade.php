@@ -6,6 +6,12 @@
 
 @section('content')
 
+@if($profileIncomplete)
+    <div class="bg-yellow-100 border-l-4 border-yellow-500 text-yellow-800 p-4 rounded mb-6">
+        Please complete your tutor profile before accessing Manage Availability, Sessions, and Reports.
+    </div>
+@endif
+
 <div class="space-y-6">
 
     {{-- WELCOME SECTION --}}
@@ -154,11 +160,17 @@
             </p>
         </div>
 
+        @if($profileIncomplete)
+            <button disabled
+                class="bg-gray-400 text-white px-6 py-3 rounded-xl cursor-not-allowed opacity-60">
+                Manage Availability
+            </button>
+        @else
         <a href="{{ route('tutor.availability') }}"
            class="bg-blue-600 hover:bg-blue-700 text-white px-6 py-3 rounded-xl font-semibold shadow-md transition">
             Manage Availability
         </a>
-
+        @endif
     </div>
 
 

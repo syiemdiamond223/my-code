@@ -188,7 +188,7 @@ Route::middleware(['auth', 'blocked'])->group(function () {
         $availability = Availability::where('id', $request->availability_id)
             ->where('tutor_id', $tutor->id)
             ->where('status', 'available')
-            ->first();
+                ->first();
 
         if (!$availability) {
 
@@ -342,25 +342,31 @@ Route::middleware(['auth', 'blocked'])->group(function () {
 
 
     // TUTOR SESSIONS - SHOW ALL SESSIONS FOR TUTOR
+Route::get('/tutor/sessions', function () {
 
-    Route::get('/tutor/sessions', function () {
+    $user = Auth::user();
+    $tutor = Tutor::where('user_id', $user->id)->first();
 
-        $tutor = Tutor::where('user_id', Auth::id())->first();
+    // SAFE CHECK
+    if (!$tutor) {
+        return redirect()
+            ->route('tutor.dashboard')
+            ->with('error', 'Please complete your tutor profile first.');
+    }
 
-         Booking::where('status', 'approved')
+    // Auto update old sessions
+    Booking::where('status', 'approved')
         ->whereDate('session_date', '<', today())
-        ->update([
-            'status' => 'completed'
-        ]);
+        ->update(['status' => 'completed']);
 
-        $sessions = Booking::with('student', 'subject')
-            ->where('tutor_id', $tutor->id)
-            ->latest()
-            ->get();
+    $sessions = Booking::with('student', 'subject')
+        ->where('tutor_id', $tutor->id)
+        ->latest()
+        ->get();
 
-        return view('tutor.sessions', compact('sessions'));
+    return view('tutor.sessions', compact('sessions'));
 
-    })->name('tutor.sessions');
+})->name('tutor.sessions');
 
 
     // TUTOR REPORTS

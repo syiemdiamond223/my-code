@@ -10,9 +10,10 @@ class TutorDashboardController extends Controller
 {
     public function index()
     {
+        //Logic to check if tutor profile is complete
         $tutor = Auth::user()->tutor;
 
-
+        // Flag to indicate if profile is incomplete
         $profileIncomplete = !$tutor;
 
         if (!$tutor) {

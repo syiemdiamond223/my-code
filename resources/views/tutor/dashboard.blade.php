@@ -6,59 +6,59 @@
 
 @section('content')
 
-@if($profileIncomplete)
-    <div class="bg-yellow-100 border-l-4 border-yellow-500 text-yellow-800 p-4 rounded mb-6">
-        Please complete your tutor profile before accessing Manage Availability, Sessions, and Reports.
-    </div>
-@endif
-
-<div class="space-y-6">
-
-    {{-- WELCOME SECTION --}}
-    <div class="relative overflow-hidden rounded-3xl shadow-sm border border-blue-100 min-h-[340px] mb-10">
-
-        {{-- Background Image --}}
-        <img src="{{ asset('images/tutors_dashboard.jpeg') }}"
-             class="absolute inset-0 w-full h-full object-cover object-center opacity-90">
-
-        {{-- Overlay --}}
-        <div class="absolute inset-0 bg-white/20 backdrop-blur-[1px]"></div>
-
-        {{-- Content --}}
-        <div class="relative z-10 p-8 md:p-10 flex items-center gap-6">
-
-            {{-- Avatar --}}
-            <div class="w-28 h-28 rounded-full bg-blue-500 flex items-center justify-center text-white text-5xl font-bold shadow-lg">
-                {{ strtoupper(substr(Auth::user()->name, 0, 1)) }}
-            </div>
-
-            {{-- TEXT --}}
-            <div>
-                <h1 class="text-4xl font-bold text-gray-900">
-                    Welcome, {{ Auth::user()->name }}
-                </h1>
-
-                <p class="text-gray-600 mt-2 text-lg">
-                    Manage your tutoring activities and stay connected with students.
-                </p>
-            </div>
-
+    @if($profileIncomplete)
+        <div class="bg-yellow-100 border-l-4 border-yellow-500 text-yellow-800 p-4 rounded mb-6">
+            Please complete your tutor profile before accessing Manage Availability, Sessions, and Reports.
         </div>
-    </div>
+    @endif
+
+    <div class="space-y-6">
+
+        {{-- WELCOME SECTION --}}
+        <div class="relative overflow-hidden rounded-3xl shadow-sm border border-blue-100 min-h-[340px] mb-10">
+
+            {{-- Background Image --}}
+            <img src="{{ asset('images/tutors_dashboard.jpeg') }}"
+                class="absolute inset-0 w-full h-full object-cover object-center opacity-90">
+
+            {{-- Overlay --}}
+            <div class="absolute inset-0 bg-white/20 backdrop-blur-[1px]"></div>
+
+            {{-- Content --}}
+            <div class="relative z-10 p-8 md:p-10 flex items-center gap-6">
+
+                {{-- Avatar --}}
+                <div class="w-28 h-28 rounded-full bg-blue-500 flex items-center justify-center text-white text-5xl font-bold shadow-lg">
+                    {{ strtoupper(substr(Auth::user()->name, 0, 1)) }}
+                </div>
+
+                {{-- TEXT --}}
+                <div>
+                    <h1 class="text-4xl font-bold text-gray-900">
+                        Welcome, {{ Auth::user()->name }}
+                    </h1>
+
+                    <p class="text-gray-600 mt-2 text-lg">
+                        Manage your tutoring activities and stay connected with students.
+                    </p>
+                </div>
+
+            </div>
+        </div>
 
 
 
-    {{-- STATS --}}
-<div class="grid grid-cols-1 md:grid-cols-4 gap-6">
+        {{-- STATS --}}
+    <div class="grid grid-cols-1 md:grid-cols-3 gap-6 max-w-5xl">
 
     {{-- TOTAL STUDENTS --}}
-    <div class="bg-gradient-to-br from-rose-400 to-violet-700 rounded-3xl p-6 shadow-lg text-white">
+    <div class="bg-gradient-to-br from-rose-400 to-violet-700 rounded-3xl p-5 shadow-lg text-white">
 
         <p class="text-white text-sm">
             Total Students
         </p>
 
-        <h2 class="text-4xl font-bold mt-3">
+        <h2 class="text-3xl font-bold mt-2">
             {{ $totalStudents ?? 0 }}
         </h2>
 
@@ -74,20 +74,6 @@
 
         <h2 class="text-4xl font-bold mt-3">
             {{ $upcomingSessionList->count() ?? 0 }}
-        </h2>
-
-    </div>
-
-
-    {{-- PENDING REQUESTS --}}
-    <div class="bg-gradient-to-br from-amber-400 to-violet-600 rounded-3xl p-6 shadow-lg text-white">
-
-        <p class="text-white text-sm">
-            Pending Requests
-        </p>
-
-        <h2 class="text-4xl font-bold mt-3">
-            {{ $pendingBookings->count() ?? 0 }}
         </h2>
 
     </div>

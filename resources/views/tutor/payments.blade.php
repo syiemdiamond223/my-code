@@ -1,50 +1,11 @@
-@extends('layouts.student')
-
+@extends('layouts.tutor')
 @section('page-title', 'Payment History')
-
-@section('page-subtitle', 'Track all your payment transactions')
-
+@section('page-subtitle', 'Track all your earnings and refunds')
 @section('content')
-
 <div class="p-6 bg-gray-50 min-h-screen">
 
-
-    <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
-
-    <div class="bg-green-100 border border-green-500 p-6 rounded-2xl">
-        <h3 class="text-sm text-gray-600 mb-2">
-            Total Paid
-        </h3>
-
-        <p class="text-3xl font-bold text-green-700">
-            ₹{{ $totalPaid }}
-        </p>
-    </div>
-
-    <div class="bg-yellow-100 border border-yellow-500 p-6 rounded-2xl">
-        <h3 class="text-sm text-gray-600 mb-2">
-            Pending Refund Requests
-        </h3>
-
-        <p class="text-3xl font-bold text-yellow-700">
-            {{ $pendingRefunds }}
-        </p>
-    </div>
-
-    <div class="bg-blue-100 border border-blue-500 p-6 rounded-2xl">
-        <h3 class="text-sm text-gray-600 mb-2">
-            Total Refund Received
-        </h3>
-
-        <p class="text-3xl font-bold text-blue-700">
-            ₹{{ $totalRefund }}
-        </p>
-    </div>
-
-</div>
-
     <form method="GET"
-        action="{{ route('student.payments') }}"
+        action="{{ route('tutor.payments') }}"
         class="bg-white p-4 rounded-xl shadow mb-6">
 
         <div class="grid md:grid-cols-3 gap-4">
@@ -53,7 +14,7 @@
                 type="text"
                 name="tutor"
                 value="{{ request('tutor') }}"
-                placeholder="Search Tutor"
+                placeholder="Search Student"
                 class="border rounded-lg px-4 py-2">
 
             <select
@@ -98,7 +59,7 @@
 
             </button>
 
-            <a href="{{ route('student.payments') }}"
+            <a href="{{ route('tutor.payments') }}"
             class="bg-violet-600 text-white px-5 py-2 rounded-lg">
 
                 Reset
@@ -108,6 +69,40 @@
         </div>
 
     </form>
+
+    <div class="grid grid-cols-1 md:grid-cols-3 gap-5 mb-8">
+
+    <div class="bg-green-100 border border-green-500 p-5 rounded-2xl">
+        <h3 class="text-sm text-gray-600 mb-2">
+             Total Payments Received
+        </h3>
+
+        <p class="text-3xl font-bold text-green-700">
+            ₹{{ $totalEarnings }}
+        </p>
+    </div>
+
+    <div class="bg-yellow-100 border border-yellow-500 p-6 rounded-2xl">
+        <h3 class="text-sm text-gray-600 mb-2">
+            Refunds Requests
+        </h3>
+
+        <p class="text-3xl font-bold text-yellow-700">
+            {{ $pendingRefunds }}
+        </p>
+    </div>
+
+    <div class="bg-blue-100 border border-blue-500 p-6 rounded-2xl">
+        <h3 class="text-sm text-gray-600 mb-2">
+            Total Refunded
+        </h3>
+
+        <p class="text-3xl font-bold text-blue-700">
+            ₹{{ $totalRefunds }}
+        </p>
+    </div>
+
+</div>
 
     @if($payments->isEmpty())
 
@@ -132,7 +127,7 @@
                     <div>
 
                         <h2 class="text-xl font-semibold text-gray-900">
-                            {{ $payment->tutor->user->name }}
+                            {{ $payment->student->name }}
                         </h2>
 
                         <p class="text-gray-500 text-sm">
@@ -164,14 +159,10 @@
                         ₹{{ $payment->total_price }}
                     </p>
 
-                    @if($payment->razorpay_payment_id)
-
                     <p>
                         <strong>Transaction ID:</strong>
-                        {{ $payment->razorpay_payment_id }}
+                        {{ $payment->razorpay_payment_id ?? 'Not Available' }}
                     </p>
-
-                    @endif
 
                     <p>
                         <strong>Session Date:</strong>
@@ -213,7 +204,7 @@
                     <div class="mt-4 p-4 rounded-xl
 
                         @if($payment->refund_status == 'refunded')
-                            bg-green-100 text-green-700 border border-green-500
+                            bg-green-100 text-green-700 border border-green-200
 
                         @elseif($payment->refund_status == 'partial_refund')
                             bg-yellow-100 text-yellow-700 border border-yellow-200

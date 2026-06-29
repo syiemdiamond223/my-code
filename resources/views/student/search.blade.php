@@ -110,39 +110,6 @@
 
                 </div>
 
-                <!-- AVAILABILITY -->
-                @if($tutor->availabilities->where('status', 'available')->count())
-
-                    <div class="mt-4">
-
-                        <h4 class="text-sm font-semibold text-gray-800 mb-2">
-                            Available Slots
-                        </h4>
-
-                        @foreach($tutor->availabilities as $slot)
-
-                            @if($slot->status == 'available')
-
-                                <div class="bg-green-50 border border-green-200 rounded-lg p-3 mb-2">
-
-                                    <p class="text-sm text-gray-700">
-                                        Date: {{ $slot->available_date }}
-                                    </p>
-
-                                    <p class="text-sm font-medium text-green-700">
-                                        Time: {{ $slot->start_time }} - {{ $slot->end_time }}
-                                    </p>
-
-                                </div>
-
-                            @endif
-
-                        @endforeach
-
-                    </div>
-
-                @endif
-
                 <!-- ACTION -->
                 <a href="{{ route('student.booking.create', $tutor->id) }}"
                    class="block text-center w-full bg-blue-600 hover:bg-blue-700 transition text-white py-3 rounded-xl font-medium">

@@ -14,13 +14,16 @@ class Availability extends Model
         'status',
     ];
 
+    //Relationships
     public function tutor()
     {
+        // ONE AVAILABILITY BELONGS TO ONE TUTOR
         return $this->belongsTo(Tutor::class);
     }
 
     public function bookings()
     {
+        // ONE AVAILABILITY CAN HAVE MANY BOOKINGS
         return $this->hasMany(Booking::class);
     }
 }

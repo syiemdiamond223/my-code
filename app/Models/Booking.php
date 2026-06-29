@@ -11,8 +11,7 @@ class Booking extends Model
         'student_id',
         'tutor_id',
         'subject_id',
-
-        // ✅ ADD THESE
+        'student_class',
         'availability_id',
         'session_time',
 
@@ -26,7 +25,8 @@ class Booking extends Model
         'razorpay_payment_id',
         'razorpay_order_id',
         'paid_at',
-
+        'refund_status',
+        'refund_amount',
         'student_phone',
         'student_address',
     ];
@@ -49,7 +49,7 @@ class Booking extends Model
         return $this->belongsTo(Subject::class);
     }
 
-    // ✅ BOOKING BELONGS TO AVAILABILITY
+    // BOOKING BELONGS TO AVAILABILITY
     public function availability()
     {
         return $this->belongsTo(Availability::class);

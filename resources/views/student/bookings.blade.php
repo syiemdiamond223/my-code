@@ -1,12 +1,12 @@
 @extends('layouts.student')
 
-@section('page-title', 'My Bookings')
+@section('page-title', 'My Learning Sessions')
 
-@section('page-subtitle', 'Track and manage your booked sessions')
+@section('page-subtitle', 'Track and manage your booked tutoring sessions')
 
 @section('content')
 
-<div class="p-6 bg-gray-50 min-h-screen">
+<div class="p-4 bg-gray-50 min-h-screen">
 
 
     <!-- Success Message -->
@@ -40,11 +40,11 @@
 
     @else
 
-        <div class="space-y-6">
+        <div class="space-y-4">
 
             @foreach($bookings as $booking)
 
-            <div class="bg-white p-6 rounded-2xl shadow-sm border border-gray-200 hover:shadow-lg transition">
+            <div class="bg-white p-5 rounded-2xl shadow-sm border border-gray-200 hover:shadow-lg transition">
 
                 <!-- Top -->
                 <div class="flex justify-between items-center mb-4">
@@ -92,7 +92,7 @@
                 </div>
 
                 <!-- Booking Details -->
-                <div class="space-y-2 text-sm text-gray-600 mb-5">
+                <div class="space-y-1 text-sm text-gray-600 mb-3">
 
                     <p>
                         <strong>Date:</strong>
@@ -113,6 +113,20 @@
                         <strong>Total Price:</strong>
                         ₹{{ $booking->total_price }}
                     </p>
+
+                    @if($booking->payment_status == 'pending' &&
+                        $booking->status != 'cancelled' &&
+                        $booking->status != 'rejected')
+
+                        <div class="mt-4">
+                            <a href="{{ route('student.payment.pay', $booking->id) }}"
+                            class="inline-flex items-center gap-2 bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-700 hover:to-indigo-700 text-white px-5 py-2.5 rounded-xl shadow-md hover:shadow-lg transition duration-300 font-semibold">
+
+                                💳 <span>Proceed to Payment</span>
+
+                            </a>
+                        </div>
+                    @endif
 
                 </div>
 
@@ -197,6 +211,22 @@
 
 
                 <!-- CANCELLED MESSAGE -->
+                @if($booking->refund_status != 'not_requested')
+
+                <div class="mt-3 bg-blue-50 border border-blue-200 text-blue-700 px-4 py-3 rounded-xl text-sm">
+
+                    Refund Status:
+                    {{ ucfirst(str_replace('_', ' ', $booking->refund_status)) }}
+
+                    <br>
+
+                    Refund Amount:
+                    ₹{{ $booking->refund_amount }}
+
+                </div>
+
+                @endif
+
                 @if($booking->status == 'cancelled')
 
                     <div class="bg-gray-100 text-gray-700 px-4 py-3 rounded-xl text-sm">
@@ -230,7 +260,11 @@
 
 
                 <!-- CANCEL BUTTON -->
-                @if($booking->status == 'pending')
+                @if(
+                    $booking->status != 'completed'
+                    && $booking->status != 'cancelled'
+                    && $booking->status != 'rejected'
+                )
 
                     <form method="POST"
                           action="{{ route('student.bookings.cancel', $booking->id) }}"
@@ -242,7 +276,7 @@
                         <button type="submit"
                                 class="bg-red-600 hover:bg-red-700 text-white px-4 py-2 rounded-lg text-sm font-medium transition">
 
-                            Cancel Booking
+                            Cancel Session
 
                         </button>
 

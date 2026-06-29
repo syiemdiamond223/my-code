@@ -1,156 +1,138 @@
-<!DOCTYPE html>
-<html lang="en">
+@extends('layouts.student')
 
-<head>
-    <meta charset="UTF-8">
-    <title>Student Reports</title>
+@section('page-title', 'Booking Records')
 
-    @vite(['resources/css/app.css', 'resources/js/app.js'])
-</head>
+@section('page-subtitle', 'Manage and download your booking records')
 
-<body class="bg-white min-h-screen text-gray-900">
+@section('content')
 
-<div class="p-8">
+<div class="bg-white border border-slate-200 rounded-3xl shadow-lg overflow-hidden">
 
-    <!-- HEADER -->
-    <div class="flex justify-between items-center mb-8">
+    <div class="overflow-x-auto">
 
-        <div>
+        <table class="min-w-full">
 
-            <h1 class="text-4xl font-bold text-slate-800">
-                My Booking Reports
-            </h1>
+            <thead class="bg-slate-50">
 
-            <p class="text-slate-500 mt-2 text-lg">
-                Preview and download your booking reports
-            </p>
+                <tr>
 
-        </div>
+                    <th class="px-6 py-5 text-left">
+                        Booking ID
+                    </th>
 
-        <a href="{{ route('student.dashboard') }}"
-           class="bg-indigo-600 hover:bg-indigo-700 text-white px-6 py-3 rounded-2xl font-semibold shadow">
+                    <th class="px-6 py-5 text-left">
+                        Tutor
+                    </th>
 
-            Back Dashboard
+                    <th class="px-6 py-5 text-left">
+                        Subject
+                    </th>
 
-        </a>
+                    <th class="px-6 py-5 text-left">
+                        Status
+                    </th>
 
-    </div>
+                    <th class="px-6 py-5 text-left">
+                        Action
+                    </th>
 
+                </tr>
 
+            </thead>
 
-    <!-- TABLE -->
-    <div class="bg-white border border-slate-200 rounded-3xl shadow-lg overflow-hidden">
+            <tbody>
 
-        <div class="overflow-x-auto">
+                @forelse($bookings as $booking)
 
-            <table class="min-w-full">
+                    <tr class="border-t hover:bg-slate-50 transition">
 
-                <thead class="bg-slate-50">
+                        <td class="px-6 py-5">
+                            #{{ $booking->id }}
+                        </td>
 
-                    <tr>
+                        <td class="px-6 py-5">
+                            {{ $booking->tutor->user->name ?? 'N/A' }}
+                        </td>
 
-                        <th class="px-6 py-5 text-left">
-                            Booking ID
-                        </th>
+                        <td class="px-6 py-5">
+                            {{ $booking->subject->name ?? 'N/A' }}
+                        </td>
 
-                        <th class="px-6 py-5 text-left">
-                            Tutor
-                        </th>
+                        <td class="px-6 py-5">
 
-                        <th class="px-6 py-5 text-left">
-                            Subject
-                        </th>
+                            @if($booking->status == 'approved')
 
-                        <th class="px-6 py-5 text-left">
-                            Status
-                        </th>
+                                <span class="px-4 py-2 rounded-full text-sm font-semibold bg-emerald-100 text-emerald-700">
+                                    Approved
+                                </span>
 
-                        <th class="px-6 py-5 text-left">
-                            Action
-                        </th>
+                            @elseif($booking->status == 'rejected')
+
+                                <span class="px-4 py-2 rounded-full text-sm font-semibold bg-red-100 text-red-700">
+                                    Rejected
+                                </span>
+
+                            @elseif($booking->status == 'completed')
+
+                                <span class="px-4 py-2 rounded-full text-sm font-semibold bg-blue-100 text-blue-700">
+                                    Completed
+                                </span>
+
+                            @else
+
+                                <span class="px-4 py-2 rounded-full text-sm font-semibold bg-yellow-100 text-yellow-700">
+                                    Pending
+                                </span>
+
+                            @endif
+
+                        </td>
+
+                        <td class="px-6 py-5">
+
+                            <div class="flex gap-3">
+
+                                <a href="{{ route('student.reports.preview', $booking->id) }}"
+                                   class="bg-indigo-600 hover:bg-indigo-700 text-white px-5 py-2 rounded-xl">
+
+                                    Preview
+
+                                </a>
+
+                                <a href="{{ route('student.reports.download', $booking->id) }}"
+                                   class="bg-emerald-600 hover:bg-emerald-700 text-white px-5 py-2 rounded-xl">
+
+                                    Download
+
+                                </a>
+
+                            </div>
+
+                        </td>
 
                     </tr>
 
-                </thead>
+                @empty
 
+                    <tr>
 
+                        <td colspan="5"
+                            class="px-6 py-10 text-center text-slate-400">
 
-                <tbody>
+                            No reports available.
 
-                    @forelse($bookings as $booking)
+                        </td>
 
-                        <tr class="border-t">
+                    </tr>
 
-                            <td class="px-6 py-5">
-                                #{{ $booking->id }}
-                            </td>
+                @endforelse
 
-                            <td class="px-6 py-5">
-                                {{ $booking->tutor->user->name ?? 'N/A' }}
-                            </td>
+            </tbody>
 
-                            <td class="px-6 py-5">
-                                {{ $booking->subject->name ?? 'N/A' }}
-                            </td>
-
-                            <td class="px-6 py-5">
-
-                                <span class="px-4 py-2 rounded-full text-sm font-semibold bg-emerald-100 text-emerald-700">
-
-                                    {{ ucfirst($booking->status) }}
-
-                                </span>
-
-                            </td>
-
-                            <td class="px-6 py-5">
-
-                                <div class="flex gap-3">
-
-                                    <a href="{{ route('student.reports.preview', $booking->id) }}"
-                                       class="bg-indigo-600 hover:bg-indigo-700 text-white px-5 py-2 rounded-xl">
-
-                                        Preview
-
-                                    </a>
-
-                                    <a href="{{ route('student.reports.download', $booking->id) }}"
-                                       class="bg-emerald-600 hover:bg-emerald-700 text-white px-5 py-2 rounded-xl">
-
-                                        Download
-
-                                    </a>
-
-                                </div>
-
-                            </td>
-
-                        </tr>
-
-                    @empty
-
-                        <tr>
-
-                            <td colspan="5"
-                                class="px-6 py-10 text-center text-slate-400">
-
-                                No reports available.
-
-                            </td>
-
-                        </tr>
-
-                    @endforelse
-
-                </tbody>
-
-            </table>
-
-        </div>
+        </table>
 
     </div>
 
 </div>
 
-</body>
-</html>
+@endsection

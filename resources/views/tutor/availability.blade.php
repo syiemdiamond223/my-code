@@ -44,6 +44,7 @@
                 </label>
 
                 <input type="date"
+                       id="availableDate"
                        name="available_date"
                        min="{{ date('Y-m-d') }}"
                        class="w-full border border-gray-300 rounded-xl px-4 py-3 text-black bg-white focus:ring-2 focus:ring-blue-500 outline-none"
@@ -211,5 +212,22 @@
     </div>
 
 </div>
+
+<!-- CALENDAR (Flatpickr) -->
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
+
+<script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
+
+<script>
+    let bookedDates = @json($bookedDates ?? []);
+</script>
+
+<script>
+flatpickr("#availableDate", {
+    dateFormat: "Y-m-d",
+    minDate: "today",
+     disable: bookedDates
+});
+</script>
 
 @endsection

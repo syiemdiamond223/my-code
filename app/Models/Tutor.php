@@ -8,12 +8,12 @@ use Illuminate\Database\Eloquent\Model;
 class Tutor extends Model
 {
     protected $fillable = [
-        'user_id',//which user this tutor profile belongs to
-        'bio',//brief description of the tutor
-        'phone',//tutor's phone number
-        'qualification',//educational qualifications
-        'experience',//teaching experience
-        'institution',//institution where the tutor is affiliated
+        'user_id',
+        'bio',
+        'phone',
+        'qualification',
+        'experience',
+        'institution',
         'price_per_hour',
         'mode',
         'is_approved',

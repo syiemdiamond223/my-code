@@ -84,24 +84,21 @@
                     {{-- FIXED ACTIONS ONLY --}}
                     <td class="p-4">
 
-    <div class="flex gap-2 items-center">
+            <div class="flex gap-2 items-center">
 
-        <a href="{{ route('admin.tutors.show', $tutor->id) }}"
-           class="bg-blue-600 text-white px-4 py-2 rounded-lg">
-            View Profile
-        </a>
+                <a href="{{ route('admin.tutors.show', $tutor->id) }}"
+                    class="bg-blue-600 text-white px-4 py-2 rounded-lg">
+                        View Profile
+                    </a>
+
+                </div>
+
+            </td>
+    </span>
 
     </div>
-
-</td>
-                                </span>
-
-                        </div>
-
-                    </td>
-
-                </tr>
-
+    </td>
+    </tr>
                 @empty
 
                 <tr>

@@ -1,44 +1,16 @@
-<!DOCTYPE html>
-<html lang="en">
+@extends('layouts.admin')
 
-<head>
-    <meta charset="UTF-8">
-    <title>Booking Reports</title>
+@section('page-title', 'Booking Records')
 
-    @vite(['resources/css/app.css', 'resources/js/app.js'])
-</head>
+@section('page-subtitle', 'Manage and download booking records')
 
-<body class="bg-white min-h-screen text-gray-900">
+@section('content')
 
-<div class="p-8">
+<div class="space-y-6">
 
-    <!-- PAGE HEADER -->
-    <div class="flex justify-between items-center mb-8">
-
-        <div>
-
-            <h1 class="text-4xl font-bold text-slate-800">
-                Booking Reports
-            </h1>
-
-            <p class="text-slate-500 mt-2 text-lg">
-                Manage and download booking reports
-            </p>
-
-        </div>
-
-
-        <!-- BACK BUTTON -->
-        <a href="{{ route('admin.dashboard') }}"
-           class="bg-indigo-600 hover:bg-indigo-700 text-white font-semibold px-6 py-3 rounded-2xl shadow transition">
-
-            Back Dashboard
-
-        </a>
+    <div class="flex justify-end">
 
     </div>
-
-
 
     <!-- REPORT TABLE -->
     <div class="bg-white border border-slate-200 rounded-3xl shadow-lg overflow-hidden">
@@ -80,8 +52,6 @@
 
                 </thead>
 
-
-
                 <!-- TABLE BODY -->
                 <tbody class="bg-white">
 
@@ -94,28 +64,20 @@
                                 #{{ $booking->id }}
                             </td>
 
-
-
                             <!-- STUDENT -->
                             <td class="px-6 py-5 text-slate-600">
                                 {{ $booking->student->name ?? 'N/A' }}
                             </td>
-
-
 
                             <!-- TUTOR -->
                             <td class="px-6 py-5 text-slate-600">
                                 {{ $booking->tutor->user->name ?? 'N/A' }}
                             </td>
 
-
-
                             <!-- SUBJECT -->
                             <td class="px-6 py-5 text-slate-600">
                                 {{ $booking->subject->name ?? 'N/A' }}
                             </td>
-
-
 
                             <!-- STATUS -->
                             <td class="px-6 py-5">
@@ -123,32 +85,24 @@
                                 @if($booking->status == 'approved')
 
                                     <span class="px-4 py-2 rounded-full text-sm font-semibold bg-emerald-100 text-emerald-700">
-
                                         Approved
-
                                     </span>
 
                                 @elseif($booking->status == 'rejected')
 
                                     <span class="px-4 py-2 rounded-full text-sm font-semibold bg-red-100 text-red-700">
-
                                         Rejected
-
                                     </span>
 
                                 @else
 
                                     <span class="px-4 py-2 rounded-full text-sm font-semibold bg-yellow-100 text-yellow-700">
-
                                         Pending
-
                                     </span>
 
                                 @endif
 
                             </td>
-
-
 
                             <!-- ACTION BUTTONS -->
                             <td class="px-6 py-5">
@@ -162,7 +116,6 @@
                                         Preview
 
                                     </a>
-
 
                                     <!-- DOWNLOAD -->
                                     <a href="{{ route('admin.reports.download', $booking->id) }}"
@@ -203,5 +156,4 @@
 
 </div>
 
-</body>
-</html>
+@endsection

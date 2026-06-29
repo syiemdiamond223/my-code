@@ -7,10 +7,8 @@
 
     <title>{{ config('app.name', 'Tutor Finder') }}</title>
 
-    <!-- Tailwind CDN -->
     <script src="https://cdn.tailwindcss.com"></script>
 
-    <!-- Font -->
     <link rel="preconnect" href="https://fonts.bunny.net">
     <link href="https://fonts.bunny.net/css?family=figtree:400,500,600&display=swap" rel="stylesheet" />
 
@@ -21,23 +19,38 @@
     </style>
 </head>
 
-<body class="relative min-h-screen flex items-center justify-center
-             bg-gradient-to-br from-blue-100 via-white to-gray-100 overflow-hidden">
+<body class="min-h-screen flex">
 
-    <!-- Soft Background Glow Effects -->
-    <div class="absolute w-96 h-96 bg-blue-200/40 rounded-full blur-3xl top-10 left-10"></div>
-    <div class="absolute w-96 h-96 bg-gray-300/30 rounded-full blur-3xl bottom-10 right-10"></div>
+    <!-- LEFT SIDE (IMAGE SECTION) -->
+    <div class="hidden md:flex w-1/2 bg-cover bg-center relative"
+         style="background-image: url('{{ asset('images/login.png') }}');">
 
-    <!-- Glass Card -->
-    <div class="relative w-full max-w-md px-10 py-10
-                bg-white/80 backdrop-blur-xl
-                border border-gray-200
-                shadow-2xl
-                rounded-3xl">
+        <!-- overlay -->
+        <div class="absolute inset-0 bg-gradient-to-br from-blue-900/80 to-black/60"></div>
 
-        {{ $slot }}
+        <!-- text -->
+        <div class="relative z-10 flex flex-col justify-center px-12 text-white">
+            <h1 class="text-4xl font-bold">Tutor Finder</h1>
+            <p class="mt-3 text-lg text-gray-200">
+                Learn Better, Connect with Tutors, and Grow Faster. 
+            </p>
+        </div>
+    </div>
+
+ <!-- RIGHT SIDE (FORM AREA) -->
+<div class="w-full md:w-1/2 flex items-center justify-center bg-gradient-to-br from-gray-50 via-white to-blue-50 p-8">
+
+    <div class="w-full max-w-md">
+
+        <div class="bg-white/95 backdrop-blur rounded-3xl shadow-2xl border border-gray-200 p-10">
+
+            {{ $slot }}
+
+        </div>
 
     </div>
+
+</div>
 
 </body>
 </html>

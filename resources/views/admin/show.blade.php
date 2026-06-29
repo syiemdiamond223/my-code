@@ -40,7 +40,23 @@
         <p><b>Qualification:</b> {{ $tutor->qualification }}</p>
         <p><b>Experience:</b> {{ $tutor->experience }} years</p>
         <p><b>Institution:</b> {{ $tutor->institution }}</p>
+        @if($tutor->certificate)
 
+            <p class="mt-3">
+
+                <b>Certificate:</b>
+
+                <a href="{{ asset('storage/'.$tutor->certificate) }}"
+                target="_blank"
+                class="text-blue-600 underline">
+
+                    View Certificate
+
+                </a>
+
+            </p>
+
+        @endif
     </div>
 
     <hr class="my-6">
@@ -109,7 +125,6 @@
             </form>
 
         </div>
-
 
     @endif
 

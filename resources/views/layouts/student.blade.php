@@ -16,7 +16,7 @@
 <div x-data="{ sidebarOpen: false, profileOpen: false }"
      class="flex min-h-screen">
 
-    <!-- MOBILE BACKDROP -->
+    <!-- BACKDROP -->
     <div x-show="sidebarOpen"
          @click="sidebarOpen = false"
          class="fixed inset-0 bg-black/50 z-40 lg:hidden">
@@ -121,7 +121,19 @@
                         ? 'bg-blue-600 text-white shadow-lg'
                         : 'text-slate-200 hover:bg-slate-700 hover:text-white' }}">
 
-                    My Bookings
+                    My Learning Sessions
+
+                </a>
+
+                <!-- PAYMENTS -->
+                <a href="{{ route('student.payments') }}"
+                class="block px-4 py-3 rounded-2xl transition duration-200
+
+                {{ request()->routeIs('student.payments')
+                        ? 'bg-blue-600 text-white shadow-lg'
+                        : 'text-slate-200 hover:bg-slate-700 hover:text-white' }}">
+
+                    Payments History
 
                 </a>
 
@@ -129,11 +141,11 @@
                 <a href="{{ route('student.reports') }}"
                    class="block px-4 py-3 rounded-2xl transition duration-200
 
-                   {{ request()->routeIs('student.reports')
+                   {{ request()->routeIs('student.reports*')
                         ? 'bg-blue-600 text-white shadow-lg'
                         : 'text-slate-200 hover:bg-slate-700 hover:text-white' }}">
 
-                    Reports
+                    Booking Records
 
                 </a>
 
@@ -196,11 +208,8 @@
                     <!-- TITLE -->
                     <div>
 
-                        <h1 class="text-2xl lg:text-3xl
-                                   font-bold text-slate-800">
-
+                        <h1 class="text-2xl lg:text-3xl font-bold text-violet-600">
                             @yield('page-title')
-
                         </h1>
 
                         <p class="text-sm text-slate-500 mt-1">

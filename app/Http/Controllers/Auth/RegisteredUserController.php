@@ -72,7 +72,7 @@ class RegisteredUserController extends Controller
             ],
         ], [
 
-            // CUSTOM ERROR MESSAGES
+            //  ERROR MESSAGES
             'name.regex' => 'Name must contain letters only.',
 
             'email.regex' => 'Email must start with a lowercase letter and contain @.',

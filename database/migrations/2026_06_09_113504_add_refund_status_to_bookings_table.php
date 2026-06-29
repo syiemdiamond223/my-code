@@ -9,23 +9,23 @@ return new class extends Migration
     /**
      * Run the migrations.
      */
-   public function up()
+  public function up(): void
     {
         Schema::table('bookings', function (Blueprint $table) {
-            $table->foreignId('availability_id')
-                ->nullable()
-                ->constrained('availabilities')
-                ->onDelete('cascade');
+
+            $table->string('refund_status')
+                ->default('not_requested')
+                ->after('payment_status');
+
         });
     }
 
-    /**
-     * Reverse the migrations.
-     */
     public function down(): void
     {
         Schema::table('bookings', function (Blueprint $table) {
-            //
+
+            $table->dropColumn('refund_status');
+
         });
     }
 };

@@ -178,6 +178,32 @@
 
             </div>
 
+            {{-- CLASS --}}
+            <div class="mb-6">
+
+                <label class="block text-sm font-semibold text-gray-700 mb-2">
+                    Student Class
+                </label>
+
+                <select name="student_class"
+                        required
+                        class="w-full border border-gray-300 rounded-xl px-4 py-3 text-black bg-white">
+
+                    <option value="">Choose Class</option>
+
+                    <option value="Class 5">Class 5</option>
+                    <option value="Class 6">Class 6</option>
+                    <option value="Class 7">Class 7</option>
+                    <option value="Class 8">Class 8</option>
+                    <option value="Class 9">Class 9</option>
+                    <option value="Class 10">Class 10</option>
+                    <option value="Class 11">Class 11</option>
+                    <option value="Class 12">Class 12</option>
+
+                </select>
+
+            </div>
+
             {{-- HOURS --}}
             <div class="mb-6">
 

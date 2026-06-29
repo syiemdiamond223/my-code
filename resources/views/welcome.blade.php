@@ -11,7 +11,7 @@
     <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
 
     <style>
-        /* Floating background blobs */
+        /* Floating background */
         .blob {
             position: absolute;
             width: 400px;
@@ -107,7 +107,7 @@
                         </div>
 
                         <p class="text-blue-600 font-medium mb-5">
-                            Learn Better. Achieve More.
+                            Learn Better, Achieve More
                         </p>
 
                         <h1 class="text-5xl md:text-6xl font-bold leading-tight text-gray-900">
@@ -186,8 +186,8 @@
                     <div class="p-8 rounded-2xl border shadow-sm hover:shadow-xl transition"
                         data-aos="zoom-in" data-aos-delay="60">
                         🎓
-                        <h3 class="text-xl font-semibold mt-3">Qualified Tutors</h3>
-                        <p class="text-gray-600 mt-2">Expert verified tutors</p>
+                        <h3 class="text-xl font-semibold mt-3">Verified Tutors</h3>
+                        <p class="text-gray-600 mt-2">Admin approved tutor profiles</p>
                     </div>
 
                     <div class="p-8 rounded-2xl border shadow-sm hover:shadow-xl transition"
@@ -231,8 +231,8 @@
 
                     <div class="space-y-3">
                         <p>✔ Verified Tutors</p>
-                        <p>✔ Secure Booking</p>
-                        <p>✔ Online & Offline Classes</p>
+                        <p>✔ Secure Booking and Payments</p>
+                        <p>✔ Online & Offline Learning</p>
                     </div>
 
                 </div>

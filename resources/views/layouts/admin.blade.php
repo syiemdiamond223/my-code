@@ -15,7 +15,7 @@
 <div x-data="{ sidebarOpen: false, profileOpen: false }"
      class="flex min-h-screen">
 
-    <!-- MOBILE BACKDROP -->
+    <!-- dropdown backdrop -->
     <div x-show="sidebarOpen"
          @click="sidebarOpen = false"
          class="fixed inset-0 bg-black/50 z-40 lg:hidden">
@@ -32,7 +32,7 @@
 
         :class="sidebarOpen ? 'translate-x-0' : '-translate-x-full'">
 
-        <!-- LOGO -->
+        <!-- LOGO  -->
         <div class="px-6 py-6 border-b border-slate-700">
 
             <div class="flex items-center gap-4">
@@ -42,6 +42,7 @@
                             flex items-center justify-center
                             text-white font-bold text-2xl shadow-lg">
 
+                    <!-- Display the first letter of the admin's name in the avatar -->
                     {{ strtoupper(substr(Auth::user()->name, 0, 1)) }}
 
                 </div>
@@ -123,9 +124,19 @@
                         ? 'bg-violet-600 text-white shadow-lg'
                         : 'text-slate-200 hover:bg-slate-700 hover:text-white' }}">
 
-                    Bookings
+                    Session Overview
 
                 </a>
+
+                <a href="{{ route('admin.payments') }}"
+                    class="block px-4 py-3 rounded-2xl transition duration-200
+                    {{ request()->routeIs('admin.payments')
+                            ? 'bg-violet-600 text-white shadow-lg'
+                            : 'text-slate-200 hover:bg-slate-700 hover:text-white' }}">
+
+                        Payment Records
+
+                    </a>
 
                 <a href="{{ route('admin.reports') }}"
                    class="block px-4 py-3 rounded-2xl transition duration-200
@@ -133,7 +144,7 @@
                         ? 'bg-violet-600 text-white shadow-lg'
                         : 'text-slate-200 hover:bg-slate-700 hover:text-white' }}">
 
-                    Reports
+                    Booking Records
 
                 </a>
 
@@ -162,9 +173,9 @@
 
                     </button>
 
-                    <div>
+                    <div class="border-l-4 border-violet-600 pl-4">
 
-                        <h1 class="text-2xl lg:text-3xl font-bold text-slate-800">
+                        <h1 class="text-3xl font-bold text-purple-800">
                             @yield('page-title')
                         </h1>
 

@@ -9,8 +9,8 @@ use App\Models\Booking;
 class Subject extends Model
 {
     protected $fillable = [
-        'name',//name of the subject
-        'description',//description of the subject
+        'name',
+        'description',
     ];
     
     public function tutors()

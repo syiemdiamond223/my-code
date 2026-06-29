@@ -33,7 +33,7 @@ class StudentDashboardController extends Controller
         ->latest()
         ->get();
 
-        // STATS
+        // STUDENT STATS
         $bookedSessions = Booking::where('student_id', Auth::id())
             ->where('status', 'approved')
             ->count();

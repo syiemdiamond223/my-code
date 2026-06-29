@@ -10,7 +10,7 @@
     <script src="//unpkg.com/alpinejs" defer></script>
 </head>
 
-<body class="bg-slate-100 text-gray-900">
+<body class="bg-white text-gray-900">
 
 <div x-data="{ sidebarOpen: false, profileOpen: false }"
      class="flex min-h-screen">
@@ -116,13 +116,24 @@
 
                 </a>
 
+                <a href="{{ route('tutor.payments') }}"
+                    class="block px-4 py-3 rounded-2xl transition duration-200
+
+                    {{ request()->routeIs('tutor.payments')
+                            ? 'bg-blue-600 text-white shadow-lg'
+                            : 'text-slate-200 hover:bg-slate-700 hover:text-white' }}">
+
+                        Payments History
+
+                    </a>
+
                 <a href="{{ route('tutor.reports') }}"
                    class="block px-4 py-3 rounded-2xl transition duration-200
                    {{ request()->routeIs('tutor.reports*')
                         ? 'bg-blue-600 text-white shadow-lg'
                         : 'text-slate-200 hover:bg-slate-700 hover:text-white' }}">
 
-                    Reports
+                    Booking Records
 
                 </a>
 
@@ -136,8 +147,7 @@
     <div class="flex-1 flex flex-col lg:ml-72">
 
         <!-- TOPBAR -->
-        <header class="bg-white border-b border-slate-200
-                       shadow-sm px-6 lg:px-8 py-5">
+       <header class="bg-white shadow-sm px-6 lg:px-8 py-5">
 
             <div class="flex items-center justify-between">
 
@@ -153,10 +163,9 @@
 
                     <div>
 
-                        <h1 class="text-2xl lg:text-3xl font-bold text-slate-800">
+                         <h1 class="text-2xl lg:text-3xl font-bold text-violet-600">
                             @yield('page-title')
                         </h1>
-
                         <p class="text-sm text-slate-500 mt-1">
                             @yield('page-subtitle')
                         </p>
@@ -232,8 +241,7 @@
         </header>
 
         <!-- CONTENT -->
-        <main class="flex-1 overflow-y-auto p-4 lg:p-8">
-
+       <main class="flex-1 overflow-y-auto p-4 lg:p-8 bg-white">
             {{-- SUCCESS MESSAGE --}}
             @if(session()->has('success'))
                 <div class="mb-6 bg-green-50 border border-green-200 text-green-700 px-6 py-4 rounded-2xl shadow-sm">

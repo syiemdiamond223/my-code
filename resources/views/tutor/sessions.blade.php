@@ -6,8 +6,7 @@
 
 @section('content')
 
-<div class="min-h-screen bg-slate-50 p-6">
-
+<div>
 
     <!-- VALIDATION ERRORS -->
     @if($errors->any())
@@ -29,53 +28,58 @@
     @endif
 
     <!-- SESSION LIST -->
-    <div class="bg-white border border-gray-200 rounded-2xl shadow-sm overflow-hidden">
+    <div class="space-y-3">
 
         @forelse($sessions as $session)
 
-            <div class="p-6 border-b border-gray-100">
+            <div class="bg-white rounded-3xl shadow-md hover:shadow-lg transition p-6">
 
-                <div class="flex items-start justify-between gap-6">
+            <div class="flex flex-col lg:flex-row lg:justify-between gap-6">
 
-                    <!-- LEFT -->
-                    <div class="space-y-2 flex-1">
+                <!-- LEFT CONTENT -->
+                <div class="flex-1">
 
-                        <h2 class="text-lg font-semibold text-gray-900">
+                        <h2 class="text-xl font-semibold text-gray-900">
                             {{ $session->student->name ?? 'Student' }}
                         </h2>
 
-                        <p class="text-sm text-gray-600">
-                            Subject:
-                            <span class="font-medium">
-                                {{ $session->subject->name ?? 'N/A' }}
-                            </span>
+                        <div class="grid grid-cols-2 md:grid-cols-4 gap-4 mt-4">
+                            <div>
+                        <p class="text-xs uppercase text-gray-500">
+                            Class
                         </p>
 
-                        <p class="text-sm text-gray-600">
-                            Session Date:
-                            <span class="font-medium">
-                                {{ $session->session_date }}
-                            </span>
+                        <p class="font-semibold">
+                            {{ $session->student_class }}
                         </p>
+                    </div>
 
-                        <p class="text-sm text-gray-600">
-                            Duration:
-                            <span class="font-medium">
-                                {{ $session->hours }} hour(s)
-                            </span>
-                        </p>
+                    <div>
+                        <p class="text-xs uppercase text-gray-500">Subject</p>
+                        <p class="font-semibold">{{ $session->subject->name ?? 'N/A' }}</p>
+                    </div>
 
-                        <p class="text-sm text-gray-600">
-                            Session Mode:
-                            <span class="font-medium">
-                                {{ ucfirst($session->session_mode) }}
-                            </span>
-                        </p>
+                    <div>
+                        <p class="text-xs uppercase text-gray-500">Date</p>
+                        <p class="font-semibold">{{ $session->session_date }}</p>
+                    </div>
+
+                    <div>
+                        <p class="text-xs uppercase text-gray-500">Duration</p>
+                        <p class="font-semibold">{{ $session->hours }} Hour(s)</p>
+                    </div>
+
+                    <div>
+                        <p class="text-xs uppercase text-gray-500">Mode</p>
+                        <p class="font-semibold">{{ ucfirst($session->session_mode) }}</p>
+                    </div>
+
+                </div>
 
                         <!-- OFFLINE DETAILS -->
                         @if($session->session_mode == 'offline')
 
-                            <div class="mt-5 bg-orange-50 border border-orange-200 rounded-2xl p-5">
+                           <div class="mt-5 border border-orange-200 bg-orange-50 rounded-xl p-3">
 
                                 <h3 class="text-lg font-bold text-orange-800 mb-4">
                                     Student Home Details
@@ -154,81 +158,129 @@
 
                         @endif
 
+                            <!-- MEETING LINK SECTION -->
+                            @if($session->status == 'approved' && $session->session_mode == 'online')
 
-                        <!-- MEETING LINK SECTION -->
-                        @if($session->status == 'approved' && $session->session_mode == 'online')
+                               <div class="mt-5 border border-gray-200 rounded-xl p-4 bg-slate-50">
+                                    <!-- SAVE MEETING LINK -->
+                                    <form method="POST"
+                                        action="{{ route('tutor.booking.meeting', $session->id) }}"
+                                        class="space-y-4">
 
-                            <div class="mt-5 border-t border-gray-200 pt-5">
+                                        @csrf
+                                        @method('PATCH')
 
-                                <form method="POST"
-                                      action="{{ route('tutor.booking.meeting', $session->id) }}"
-                                      class="space-y-4">
+                                        <div>
 
-                                    @csrf
-                                    @method('PATCH')
+                                            <label class="block text-sm font-medium text-gray-700 mb-2">
+                                                Meeting Link
+                                            </label>
 
-                                    <div>
+                                            <input type="url"
+                                                name="meeting_link"
+                                                value="{{ $session->meeting_link }}"
+                                                placeholder="https://meet.google.com/..."
+                                               class="w-full rounded-xl px-4 py-3 text-black bg-white shadow-sm focus:ring-2 focus:ring-blue-500 outline-none">
 
-                                        <label class="block text-sm font-medium text-gray-700 mb-2">
-                                            Meeting Link
-                                        </label>
+                                        </div>
 
-                                        <input type="url"
-                                               name="meeting_link"
-                                               value="{{ $session->meeting_link }}"
-                                               placeholder="https://meet.google.com/..."
-                                               class="w-full border border-gray-300 rounded-xl px-4 py-3 text-black bg-white focus:ring-2 focus:ring-blue-500 outline-none"
-                                               required>
+                                        <button type="submit"
+                                                class="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-lg text-sm font-medium transition">
+
+                                            Save Meeting Link
+
+                                        </button>
+
+                                    </form>
+
+                                    <!-- CANCEL SESSION -->
+                                    <div class="mt-3">
+
+                                        <form method="POST"
+                                            action="{{ route('tutor.booking.cancel', $session->id) }}"
+                                            onsubmit="return confirm('Are you sure you want to cancel this session?')">
+
+                                            @csrf
+                                            @method('PATCH')
+
+                                            <button type="submit"
+                                                    class="bg-red-600 hover:bg-red-700 text-white px-4 py-2 rounded-lg text-sm font-medium transition">
+
+                                                Cancel Session
+
+                                            </button>
+
+                                        </form>
 
                                     </div>
 
-                                    <button type="submit"
-                                            class="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-lg text-sm font-medium transition">
+                                    @if($session->meeting_link)
 
-                                        Save Meeting Link
+                                        <div class="mt-4">
 
-                                    </button>
+                                            <a href="{{ $session->meeting_link }}"
+                                            target="_blank"
+                                            class="inline-flex items-center bg-green-600 hover:bg-green-700 text-white px-4 py-2 rounded-lg text-sm font-medium transition">
 
-                                </form>
+                                                Open Meeting Link
 
+                                            </a>
 
-                                @if($session->meeting_link)
+                                        </div>
 
-                                    <div class="mt-4">
+                                    @endif
 
-                                        <a href="{{ $session->meeting_link }}"
-                                           target="_blank"
-                                           class="inline-flex items-center bg-green-600 hover:bg-green-700 text-white px-4 py-2 rounded-lg text-sm font-medium transition">
+                                </div>
 
-                                            Open Meeting Link
-
-                                        </a>
-
-                                    </div>
-
-                                @endif
-
-                            </div>
-
-                        @endif
-
-                    </div>
-
-                    <!-- RIGHT STATUS -->
-                    <div>
-
-                        <span class="px-3 py-1 rounded-full text-sm font-medium
-
-                            @if($session->status == 'pending')
-                                bg-yellow-100 text-yellow-700
-                            @elseif($session->status == 'completed')
-                                bg-green-100 text-green-700
-                            @elseif($session->status == 'rejected')
-                                bg-red-100 text-red-700
-                            @else
-                                bg-blue-100 text-blue-700
                             @endif
-                        ">
+
+            @if($session->payment_status == 'paid')
+
+        <div class="mt-4 flex gap-3">
+
+            <a href="{{ route('receipt.preview', $session->id) }}"
+            target="_blank"
+            class="bg-green-600 hover:bg-green-700 text-white px-4 py-2 rounded-lg text-sm font-medium">
+
+                View Receipt
+
+            </a>
+
+            <a href="{{ route('receipt.download', $session->id) }}"
+            class="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-lg text-sm font-medium">
+
+                Download Receipt
+
+            </a>
+
+        </div>
+
+        @endif
+
+        </div> <!-- CLOSE LEFT CONTENT -->
+
+        <!-- RIGHT STATUS -->
+        <div class="flex-shrink-0">
+
+            <span class="px-4 py-2 rounded-full text-sm font-semibold
+
+                    @if($session->status == 'pending')
+                        bg-yellow-100 text-yellow-700
+
+                    @elseif($session->status == 'approved')
+                        bg-blue-100 text-blue-700
+
+                    @elseif($session->status == 'completed')
+                        bg-green-100 text-green-700
+
+                    @elseif($session->status == 'cancelled')
+                        bg-gray-100 text-gray-700
+
+                    @elseif($session->status == 'rejected')
+                        bg-red-100 text-red-700
+
+                    @endif
+                ">
 
                             {{ ucfirst($session->status) }}
 
@@ -243,7 +295,7 @@
         @empty
 
             <!-- EMPTY STATE -->
-            <div class="p-12 text-center">
+            <div class="bg-white rounded-3xl shadow-md p-12 text-center">
 
                 <h3 class="text-lg font-semibold text-gray-700">
                     No Sessions Yet

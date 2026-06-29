@@ -41,32 +41,43 @@
 
 
 
-    {{-- QUICK STATS --}}
+   {{-- QUICK STATS --}}
     <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mt-6">
 
-       <div class="bg-gradient-to-r from-violet-400 to-blue-700 text-white rounded-2xl shadow-sm p-6">
-            <p class="text-white-500 text-center text-lg font-medium">Booked Sessions</p>
-            <h2 class="text-4xl font-bold text-center text-white-600 mt-3">
+        <!-- BOOKED SESSIONS -->
+        <div class="bg-gradient-to-r from-violet-400 to-blue-700 text-white rounded-2xl shadow-sm p-6">
+            <p class="text-center text-lg font-medium">
+                Booked Sessions
+            </p>
+
+            <h2 class="text-4xl font-bold text-center mt-3">
                 {{ $bookedSessions ?? 0 }}
             </h2>
         </div>
 
-       <div class="bg-gradient-to-r from-rose-300 to-violet-700 text-white rounded-2xl shadow-sm p-6">
-            <p class="text-white-500 text-center text-lg font-medium">Available Tutors</p>
-            <h2 class="text-4xl font-bold text-center text-white-600 mt-3">
+        <!-- AVAILABLE TUTORS -->
+        <div class="bg-gradient-to-r from-rose-300 to-violet-700 text-white rounded-2xl shadow-sm p-6">
+            <p class="text-center text-lg font-medium">
+                Available Tutors
+            </p>
+
+            <h2 class="text-4xl font-bold text-center mt-3">
                 {{ isset($tutors) ? $tutors->count() : 0 }}
             </h2>
         </div>
 
+        <!-- LEARNING HOURS -->
         <div class="bg-gradient-to-r from-emerald-300 to-blue-500 text-white rounded-2xl shadow-sm p-6">
-            <p class="text-white-500 text-center text-lg font-medium">Learning Hours</p>
-            <h2 class="text-4xl font-bold text-center text-white-600 mt-3">
+            <p class="text-center text-lg font-medium">
+                Learning Hours
+            </p>
+
+            <h2 class="text-4xl font-bold text-center mt-3">
                 {{ $learningHours ?? 0 }}h
             </h2>
         </div>
 
     </div>
-
 
 
     {{-- SECTION TITLE --}}
@@ -144,44 +155,6 @@
                 </span>
 
             </div>
-
-
-
-            {{-- AVAILABLE SLOTS --}}
-            @if(!empty($tutor->availabilities) && $tutor->availabilities->count())
-
-                <div class="mt-4">
-
-                    <h4 class="font-semibold text-gray-800 mb-3">
-                        Available Slots
-                    </h4>
-
-                    @foreach($tutor->availabilities as $slot)
-
-                        <div class="bg-green-50 border border-green-200 rounded-xl p-4 mb-3">
-
-                            <p class="text-gray-700">
-                                Date: {{ $slot->available_date }}
-                            </p>
-
-                            <p class="text-green-700 font-semibold">
-                                Time:
-                                <!-- Format time to 24-hour format (e.g., 14:00 - 15:00) -->
-                                 {{ \Carbon\Carbon::parse($slot->start_time)->format('H:i') }}
-                                {{ \Carbon\Carbon::parse($slot->start_time)->format('H:i') }}
-                                -
-                                {{ \Carbon\Carbon::parse($slot->end_time)->format('H:i') }}
-                            </p>
-
-                        </div>
-
-                    @endforeach
-
-                </div>
-
-            @endif
-
-
 
             {{-- BUTTON --}}
             <div class="mt-5">

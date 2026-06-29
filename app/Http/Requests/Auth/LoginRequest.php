@@ -15,19 +15,14 @@ use Illuminate\Validation\ValidationException;
 
 class LoginRequest extends FormRequest
 {
-    /**
-     * Determine if the user is authorized to make this request.
-     */
+    //validate the login request
+    //Determine if the user is authorized to make this request
     public function authorize(): bool
     {
         return true;
     }
 
-    /**
-     * Get the validation rules that apply to the request.
-     *
-     * @return array<string, \Illuminate\Contracts\Validation\ValidationRule|array<mixed>|string>
-     */
+    //validate the login request
     public function rules(): array
     {
         return [
@@ -36,11 +31,7 @@ class LoginRequest extends FormRequest
         ];
     }
 
-    /**
-     * Attempt to authenticate the request's credentials.
-     *
-     * @throws \Illuminate\Validation\ValidationException
-     */
+    //Handle the authentication attempt
     public function authenticate(): void
     {
         $this->ensureIsNotRateLimited();
@@ -51,6 +42,7 @@ class LoginRequest extends FormRequest
             $this->boolean('remember')
         )) {
 
+        //If login fails, increment the login attempts and throw validation exception
             RateLimiter::hit($this->throttleKey());
 
             throw ValidationException::withMessages([
@@ -68,18 +60,14 @@ class LoginRequest extends FormRequest
             ]);
         }
 
-        // CLEAR RATE LIMIT
+        // CLEAR LOGIN RATE LIMIT
         RateLimiter::clear($this->throttleKey());
 
         // REGENERATE SESSION
         Session::regenerate();
     }
 
-    /**
-     * Ensure the login request is not rate limited.
-     *
-     * @throws \Illuminate\Validation\ValidationException
-     */
+    //Check if the login request is not rate limited
     public function ensureIsNotRateLimited(): void
     {
         if (! RateLimiter::tooManyAttempts($this->throttleKey(), 5)) {
@@ -98,9 +86,7 @@ class LoginRequest extends FormRequest
         ]);
     }
 
-    /**
-     * Get the rate limiting throttle key for the request.
-     */
+    //Get the rate limiting throttle key for the request
     public function throttleKey(): string
     {
         return Str::transliterate(

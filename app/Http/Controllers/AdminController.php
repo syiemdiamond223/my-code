@@ -59,23 +59,6 @@ class AdminController extends Controller
         return view('admin.users', compact('users'));
     }
 
-    public function blockUser(int $id)
-    {
-        $user = User::findOrFail($id);
-
-        $user->update(['status' => 'blocked']);
-
-        return back()->with('success', 'User blocked successfully.');
-    }
-
-    public function unblockUser(int $id)
-    {
-        $user = User::findOrFail($id);
-
-        $user->update(['status' => 'active']);
-
-        return back()->with('success', 'User unblocked successfully.');
-    }
 
     public function toggleUserStatus(int $id)
     {
@@ -142,23 +125,127 @@ class AdminController extends Controller
     }
 
     //Bookings Management
-    public function bookings()
+    public function bookings(Request $request)
     {
-        $bookings = Booking::with('student', 'tutor.user', 'subject')
-            ->latest()
-            ->get();
+        $bookings = Booking::with('student', 'tutor.user', 'subject');
+
+        // Student Search
+        if ($request->filled('student')) {
+
+            $bookings->whereHas('student', function ($query) use ($request) {
+                $query->where('name', 'like', '%' . $request->student . '%');
+            });
+
+        }
+
+        // Tutor Search
+        if ($request->filled('tutor')) {
+
+            $bookings->whereHas('tutor.user', function ($query) use ($request) {
+                $query->where('name', 'like', '%' . $request->tutor . '%');
+            });
+
+        }
+
+        // Booking Status
+        if ($request->filled('status')) {
+
+            $bookings->where('status', $request->status);
+
+        }
+
+        // Session Date
+        if ($request->filled('date')) {
+
+            $bookings->whereDate('session_date', $request->date);
+
+        }
+
+        $bookings = $bookings->latest()->get();
 
         return view('admin.bookings', compact('bookings'));
     }
 
     //Payments Management
-    public function payments()
+   public function payments(Request $request)
     {
         $payments = Booking::with('student', 'tutor.user', 'subject')
-            ->whereNotNull('payment_status')
-            ->latest()
-            ->get();
+            ->whereNotNull('payment_status');
 
-        return view('admin.payments', compact('payments'));
+        // Search Student Name
+        if ($request->filled('student')) {
+
+            $payments->whereHas('student', function ($query) use ($request) {
+
+                $query->where(
+                    'name',
+                    'like',
+                    '%' . $request->student . '%'
+                );
+
+            });
+
+        }
+
+        // Search Tutor Name
+        if ($request->filled('tutor')) {
+
+            $payments->whereHas('tutor.user', function ($query) use ($request) {
+
+                $query->where(
+                    'name',
+                    'like',
+                    '%' . $request->tutor . '%'
+                );
+
+            });
+
+        }
+
+        // Filter Payment Status
+        if ($request->filled('status')) {
+
+            $payments->where(
+                'payment_status',
+                $request->status
+            );
+
+        }
+
+        // Filter Session Date
+        if ($request->filled('date')) {
+
+            $payments->whereDate(
+                'session_date',
+                $request->date
+            );
+
+        }
+
+        $payments = $payments->latest()->get();
+
+        // PAYMENT STATISTICS
+
+        $totalRevenue = Booking::where('payment_status', 'paid')
+            ->sum('total_price');
+
+        $totalPaidTransactions = Booking::where('payment_status', 'paid')
+            ->count();
+
+        $pendingPayments = Booking::where('payment_status', 'pending')
+            ->count();
+
+        $totalRefunds = Booking::whereIn('refund_status', [
+            'refunded',
+            'partial_refund'
+        ])->sum('refund_amount');
+
+        return view('admin.payments', compact(
+            'payments',
+            'totalRevenue',
+            'totalPaidTransactions',
+            'pendingPayments',
+            'totalRefunds'
+        ));
     }
 }

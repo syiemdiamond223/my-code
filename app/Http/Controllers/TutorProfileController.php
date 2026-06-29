@@ -114,7 +114,7 @@ class TutorProfileController extends Controller
             ->with('success', 'Profile updated successfully and sent for admin review.');
     }
 
-    // VALIDATION (Reused for both store and update)
+    // VALIDATION 
     private function validateRequest(Request $request)
     {
         $request->validate([

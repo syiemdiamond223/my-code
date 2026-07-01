@@ -46,7 +46,7 @@
             </h3>
 
             <p class="text-sm text-gray-600">
-                Your payment is securely processed through Razorpay. A payment receipt will be generated automatically after successful payment.
+                Your payment is securely processed through Razorpay. After successful payment, you can view or download your payment receipt.
             </p>
 
         </div>

@@ -86,7 +86,7 @@
         </div>
 
 
-        {{-- EMAIL VERIFICATION --}}
+        {{-- VERIFY EMAIL --}}
         @if ($user instanceof \Illuminate\Contracts\Auth\MustVerifyEmail && ! $user->hasVerifiedEmail())
 
             <div>
@@ -108,7 +108,7 @@
 
                     <p class="mt-2 text-sm text-green-600">
 
-                        A new verification link has been sent to your email address.
+                        A new verification link has been sent.
 
                     </p>
 
@@ -119,7 +119,7 @@
         @endif
 
 
-        {{-- SAVE BUTTON --}}
+        {{-- BUTTON --}}
         <div class="flex items-center gap-4">
 
             <button type="submit"

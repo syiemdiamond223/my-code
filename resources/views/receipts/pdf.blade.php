@@ -100,9 +100,33 @@
 
         <tr>
             <td><strong>Paid At</strong></td>
-            <td>{{ $booking->paid_at }}</td>
+            <td>
+                {{ $booking->paid_at
+                    ? \Carbon\Carbon::parse($booking->paid_at)->format('d M Y, h:i A')
+                    : 'N/A'
+                }}
+            </td>
         </tr>
 
+        @if($booking->refund_status != 'not_requested')
+        <tr>
+            <td><strong>Refund Status</strong></td>
+            <td>{{ ucfirst(str_replace('_', ' ', $booking->refund_status)) }}</td>
+        </tr>
+
+        <tr>
+            <td><strong>Refund Amount</strong></td>
+            <td>₹{{ number_format($booking->refund_amount, 2) }}</td>
+        </tr>
+        @endif
+        @if($booking->refund_status == 'refunded')
+        <tr>
+            <td><strong>Refund Note</strong></td>
+            <td>
+                The payment for this booking has been refunded to the student.
+            </td>
+        </tr>
+        @endif
         </table>
 
         <br>

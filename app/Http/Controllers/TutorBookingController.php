@@ -134,6 +134,15 @@ class TutorBookingController extends Controller
             Auth::id()
         )->first();
 
+         if (!$tutor) 
+            {
+                return redirect()
+                    ->route('tutor.dashboard')
+                    ->with(
+                        'error',
+                        'Please complete your tutor profile first.'
+                    );
+            }
         $payments = Booking::with(
             'student',
             'subject'

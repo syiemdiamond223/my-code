@@ -184,21 +184,21 @@
                 <div class="grid md:grid-cols-3 gap-8">
 
                     <div class="p-8 rounded-2xl border shadow-sm hover:shadow-xl transition"
-                        data-aos="zoom-in" data-aos-delay="60">
+                        data-aos="zoom-in" data-aos-delay="10">
                         🎓
                         <h3 class="text-xl font-semibold mt-3">Verified Tutors</h3>
                         <p class="text-gray-600 mt-2">Admin approved tutor profiles</p>
                     </div>
 
                     <div class="p-8 rounded-2xl border shadow-sm hover:shadow-xl transition"
-                        data-aos="zoom-in" data-aos-delay="80">
+                        data-aos="zoom-in" data-aos-delay="30">
                         📅
                         <h3 class="text-xl font-semibold mt-3">Easy Booking</h3>
                         <p class="text-gray-600 mt-2">Simple scheduling system</p>
                     </div>
 
                     <div class="p-8 rounded-2xl border shadow-sm hover:shadow-xl transition"
-                        data-aos="zoom-in" data-aos-delay="120">
+                        data-aos="zoom-in" data-aos-delay="80">
                         💻
                         <h3 class="text-xl font-semibold mt-3">Flexible Learning</h3>
                         <p class="text-gray-600 mt-2">Online & offline classes</p>
@@ -256,10 +256,10 @@
         <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
         <script>
         AOS.init({
-            duration: 1300,
+            duration: 800,
             easing: 'ease-in-out',
             once: true,
-            offset: 120
+            offset: 90
         });
         </script>
 

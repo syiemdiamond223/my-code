@@ -35,11 +35,11 @@ class StudentDashboardController extends Controller
 
         // STUDENT STATS
         $bookedSessions = Booking::where('student_id', Auth::id())
-            ->where('status', 'approved')
+            ->whereNotIn('status', ['cancelled', 'rejected'])
             ->count();
 
         $learningHours = Booking::where('student_id', Auth::id())
-            ->where('status', 'approved')
+            ->where('status', 'completed')
             ->sum('hours');
 
         return view('student.dashboard', compact(

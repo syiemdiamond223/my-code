@@ -82,25 +82,37 @@
                             <!-- STATUS -->
                             <td class="px-6 py-5">
 
-                                @if($booking->status == 'approved')
+                               @if($booking->status == 'completed')
 
-                                    <span class="px-4 py-2 rounded-full text-sm font-semibold bg-emerald-100 text-emerald-700">
-                                        Approved
-                                    </span>
+                                <span class="px-4 py-2 rounded-full text-sm font-semibold bg-green-100 text-green-700">
+                                    Completed
+                                </span>
 
-                                @elseif($booking->status == 'rejected')
+                            @elseif($booking->status == 'approved')
 
-                                    <span class="px-4 py-2 rounded-full text-sm font-semibold bg-red-100 text-red-700">
-                                        Rejected
-                                    </span>
+                                <span class="px-4 py-2 rounded-full text-sm font-semibold bg-blue-100 text-blue-700">
+                                    Approved
+                                </span>
 
-                                @else
+                            @elseif($booking->status == 'cancelled')
 
-                                    <span class="px-4 py-2 rounded-full text-sm font-semibold bg-yellow-100 text-yellow-700">
-                                        Pending
-                                    </span>
+                                <span class="px-4 py-2 rounded-full text-sm font-semibold bg-gray-100 text-gray-700">
+                                    Cancelled
+                                </span>
 
-                                @endif
+                            @elseif($booking->status == 'rejected')
+
+                                <span class="px-4 py-2 rounded-full text-sm font-semibold bg-red-100 text-red-700">
+                                    Rejected
+                                </span>
+
+                            @else
+
+                                <span class="px-4 py-2 rounded-full text-sm font-semibold bg-yellow-100 text-yellow-700">
+                                    Pending
+                                </span>
+
+                            @endif
 
                             </td>
 

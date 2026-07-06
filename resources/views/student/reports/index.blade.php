@@ -62,29 +62,35 @@
 
                             @if($booking->status == 'approved')
 
-                                <span class="px-4 py-2 rounded-full text-sm font-semibold bg-emerald-100 text-emerald-700">
-                                    Approved
-                                </span>
+<span class="...">
+    Approved
+</span>
 
-                            @elseif($booking->status == 'rejected')
+@elseif($booking->status == 'completed')
 
-                                <span class="px-4 py-2 rounded-full text-sm font-semibold bg-red-100 text-red-700">
-                                    Rejected
-                                </span>
+<span class="...">
+    Completed
+</span>
 
-                            @elseif($booking->status == 'completed')
+@elseif($booking->status == 'cancelled')
 
-                                <span class="px-4 py-2 rounded-full text-sm font-semibold bg-blue-100 text-blue-700">
-                                    Completed
-                                </span>
+<span class="px-4 py-2 rounded-full text-sm font-semibold bg-gray-100 text-gray-700">
+    Cancelled
+</span>
 
-                            @else
+@elseif($booking->status == 'rejected')
 
-                                <span class="px-4 py-2 rounded-full text-sm font-semibold bg-yellow-100 text-yellow-700">
-                                    Pending
-                                </span>
+<span class="px-4 py-2 rounded-full text-sm font-semibold bg-red-100 text-red-700">
+    Rejected
+</span>
 
-                            @endif
+@else
+
+<span class="px-4 py-2 rounded-full text-sm font-semibold bg-yellow-100 text-yellow-700">
+    Pending
+</span>
+
+@endif
 
                         </td>
 

@@ -10,7 +10,7 @@
     <div class="bg-white rounded-2xl shadow-sm p-6">
 
         <h2 class="text-2xl font-bold text-purple-900 mb-6">
-            View Bookings
+            VIEW BOOKINGS
         </h2>
 
         <form method="GET"
